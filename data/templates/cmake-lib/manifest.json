@@ -1,0 +1,6 @@
+{
+	"name": "cmake-lib",
+	"description": "Shared library (using CMake)",
+	"author": "Eric Le Bihan",
+	"is-library": true
+}

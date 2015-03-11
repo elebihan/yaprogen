@@ -1,0 +1,82 @@
+AC_PREREQ(2.59)
+AC_INIT([{{project_name}}], [0.1.1])
+AC_CONFIG_SRCDIR([src/main.c])
+AC_CONFIG_MACRO_DIR([m4])
+
+AM_INIT_AUTOMAKE([1.11 -Wall -Wno-portability tar-ustar dist-xz no-dist-gzip])
+AM_MAINTAINER_MODE([enable])
+AM_SILENT_RULES([yes])
+
+#####################################################################
+# Program checks
+#####################################################################
+
+AC_PROG_CC
+AC_PATH_PROG([XSLTPROC], [xsltproc], [no])
+
+#####################################################################
+# --with-
+#####################################################################
+
+# Insert calls to AC_ARG_WITH here
+
+#####################################################################
+# --enable-
+#####################################################################
+
+AC_ARG_ENABLE([manpages],
+              [AS_HELP_STRING([--disable-manpages],
+                              [disable MAN pages generation @<:@default=enabled@:>@])],
+              [enable_manpages="$enableval"],
+              [enable_manpages="yes"])
+
+AS_IF([test "x$enable_manpages" != "xno"],
+      AS_IF([test "x$XSLTPROC" = "xno"],
+            [AC_MSG_ERROR([MAN pages generation enabled but xsltproc not found])])
+)
+
+AM_CONDITIONAL([BUILD_MANPAGES], [test "x$enable_manpages" != "xno"])
+
+#####################################################################
+# Packages checks
+#####################################################################
+
+# Insert calls to PKG_CHECK_MODULES here
+
+#####################################################################
+# Function and structure checks
+#####################################################################
+
+# Insert calls to AC_CHECK_{FUNC,HEADER} here
+
+AC_SUBST([{{project_upper}}_LIBS])
+AC_SUBST([{{project_upper}}_CFLAGS])
+
+#####################################################################
+# Generate files from *.in
+#####################################################################
+
+AC_CONFIG_HEADERS([config.h])
+AC_CONFIG_FILES([
+    Makefile
+    man/Makefile
+    src/Makefile
+])
+
+#####################################################################
+{{=!! !!=}}
+
+AC_OUTPUT
+AC_MSG_RESULT([
+    $PACKAGE $VERSION
+    =======
+
+    prefix:             ${prefix}
+    sysconfdir:         ${sysconfdir}
+    libdir:             ${libdir}
+    rootlibdir:         ${rootlibdir}
+    includedir:         ${includedir}
+    bindir:             ${bindir}
+
+    man:                ${enable_manpages}
+])

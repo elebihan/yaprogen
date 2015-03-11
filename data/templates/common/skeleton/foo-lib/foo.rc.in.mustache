@@ -1,0 +1,30 @@
+#include <winver.h>
+
+VS_VERSION_INFO VERSIONINFO
+  FILEVERSION @{{api_upper}}_MAJOR_VERSION@,@{{api_upper}}_MINOR_VERSION@,@{{api_upper}}_MICRO_VERSION@,0
+  PRODUCTVERSION @{{api_upper}}_MAJOR_VERSION@,@{{api_upper}}_MINOR_VERSION@,@{{api_upper}}_MICRO_VERSION@,0
+  FILEFLAGSMASK 0
+  FILEFLAGS 0
+  FILEOS VOS__WINDOWS32
+  FILETYPE VFT_DLL
+  FILESUBTYPE VFT2_UNKNOWN
+  BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+      BLOCK "040904B0"
+      BEGIN
+	VALUE "CompanyName", "{{company_name}}"
+	VALUE "FileDescription", "{{project_name}}"
+	VALUE "FileVersion", "@{{api_upper}}_VERSION@.0"
+	VALUE "InternalName", "{{library_name}}-@{{api_upper}}_MAJOR_VERSION@-0-@{{api_upper}}_LT_CURRENT_MINUS_AGE@"
+	VALUE "LegalCopyright", "Copyright © {{year}} {{author_name}}."
+	VALUE "OriginalFilename", "{{library_name}}-@{{api_upper}}_MAJOR_VERSION@-0-@{{api_upper}}_LT_CURRENT_MINUS_AGE@.dll"
+	VALUE "ProductName", "{{project_name}}"
+	VALUE "ProductVersion", "@{{api_upper}}_VERSION@"
+      END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+      VALUE "Translation", 0x409, 1200
+    END
+  END

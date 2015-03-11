@@ -1,0 +1,52 @@
+AUTOMAKE_OPTIONS = 1.6
+
+DOC_MODULE={{project_normalized}}
+
+#DOC_MODULE_VERSION=2
+
+DOC_MAIN_SGML_FILE=$(DOC_MODULE)-docs.xml
+
+DOC_SOURCE_DIR=$(top_srcdir)/{{project_normalized}}
+
+SCANGOBJ_OPTIONS=
+
+SCAN_OPTIONS=
+
+MKDB_OPTIONS=--xml-mode --output-format=xml
+
+MKTMPL_OPTIONS=
+
+MKHTML_OPTIONS=
+
+FIXXREF_OPTIONS=
+
+HFILE_GLOB=$(top_srcdir)/{{project_normalized}}/*.h
+CFILE_GLOB=$(top_srcdir)/{{project_normalized}}/*.c
+
+EXTRA_HFILES=
+
+IGNORE_HFILES=
+
+HTML_IMAGES=
+
+content_files= version.xml
+
+expand_content_files=
+
+GTKDOC_CFLAGS=
+GTKDOC_LIBS=
+
+include $(top_srcdir)/gtk-doc.make
+
+EXTRA_DIST += version.xml.in
+
+#DISTCLEANFILES +=
+
+if ENABLE_GTK_DOC
+TESTS_ENVIRONMENT = cd $(srcdir) && \
+  DOC_MODULE=$(DOC_MODULE) DOC_MAIN_SGML_FILE=$(DOC_MAIN_SGML_FILE) \
+  SRCDIR=$(abs_srcdir) BUILDDIR=$(abs_builddir)
+#TESTS = $(GTKDOC_CHECK)
+endif
+
+-include $(top_srcdir)/git.mk

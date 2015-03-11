@@ -1,0 +1,51 @@
+# -*- coding: utf-8 -*-
+#
+# This file is part of {{project_name}}
+#
+# {{copyright_notice}}
+#
+{{#license_notice}}
+# {{line}}
+{{/license_notice}}
+
+"""
+   {{library_lower}}.utils
+   ```````````````````````
+
+   Useful classes and helper functions
+
+   :copyright: (C) {{year}} {{copyright_holder}}
+   :license: {{license_alias}}
+"""
+
+import os
+from gettext import bindtextdomain, textdomain
+
+def get_data_dir():
+    """Returns the data directory.
+
+    rtype: str
+    """
+    root_dir = os.path.dirname(os.path.abspath(__file__))
+    root_dir = os.path.join(root_dir, '..')
+
+    if os.path.exists(os.path.join(root_dir, '.git')):
+        data_dir = os.path.join(root_dir, 'data')
+    else:
+        upper, lower = root_dir.split('lib')
+        data_dir = os.path.join(upper, 'share', '{{project_normalized}}')
+
+    return os.path.normpath(data_dir)
+
+def setup_i18n():
+    """Set up internationalization."""
+    root_dir = os.path.dirname(os.path.abspath(__file__))
+    if 'lib' not in root_dir:
+        return
+    root_dir, mod_dir = root_dir.split('lib', 1)
+    locale_dir = os.path.join(root_dir, 'share', 'locale')
+
+    bindtextdomain('{{project_normalized}}', locale_dir)
+    textdomain('{{project_normalized}}')
+
+# vim: ts=4 sw=4 sts=4 et ai

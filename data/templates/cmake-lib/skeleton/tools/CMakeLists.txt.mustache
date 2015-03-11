@@ -1,0 +1,17 @@
+{{=!! !!=}}
+# Set the list of dependencies
+set(!!tool_lower!!_SRCS
+    main.c)
+
+include_directories(${CMAKE_SOURCE_DIR}/!!project_normalized!!)
+
+# Tell CMake to build an executable using the previously set dependencies
+add_executable(!!tool_name!! ${!!tool_lower!!_SRCS})
+
+# Tell CMake to add some librairies to the linker path (i.e. the ones
+# we found performing some checks in the top-level CMakeLists.txt)
+target_link_libraries(!!tool_name!! ${LIBS})
+target_link_libraries(!!tool_name!! !!link_name!!-${!!api_upper!!_API_VERSION})
+
+# Where should we install the program?
+install(TARGETS !!tool_name!! DESTINATION bin)

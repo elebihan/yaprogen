@@ -1,0 +1,17 @@
+if BUILD_TOOLS
+
+bin_PROGRAMS = {{tool_name}}
+
+{{tool_lower}}_SOURCES = \
+	main.c
+
+{{tool_lower}}_LDADD = \
+	$(top_builddir)/{{project_normalized}}/{{library_name}}-@{{api_upper}}_API_VERSION@.la \
+	$({{api_upper}}_LIBS)
+
+AM_CPPFLAGS = \
+	-I$(top_srcdir)/{{project_normalized}} \
+	-I$(top_builddir) \
+	$({{api_upper}}_CFLAGS)
+
+endif

@@ -1,0 +1,71 @@
+<?xml version='1.0'?>
+<!DOCTYPE refentry PUBLIC "-//OASIS//DTD DocBook XML V4.2//EN"
+  "http://www.oasis-open.org/docbook/xml/4.2/docbookx.dtd">
+
+<!--
+     This file is part of {{project_name}}
+
+     {{copyright_notice}}
+
+     {{#license_notice}}
+     {{line}}
+     {{/license_notice}}
+-->
+
+<refentry id="{{executable_name}}" xmlns:xi="http://www.w3.org/2001/XInclude">
+  <refentryinfo>
+
+    <title>{{executable_name}}</title>
+    <productname>{{project_name}}</productname>
+
+      <authorgroup>
+        <author>
+          <contrib>Developer</contrib>
+          <firstname>{{author_firstname}}</firstname>
+          <surname>{{author_surname}}</surname>
+          <email>{{author_email}}</email>
+        </author>
+      </authorgroup>
+
+  </refentryinfo>
+
+  <refmeta>
+    <refentrytitle>{{executable_name}}</refentrytitle>
+    <manvolnum>1</manvolnum>
+  </refmeta>
+
+  <refnamediv>
+    <refname>{{executable_name}}</refname>
+    <refpurpose>{{description}}</refpurpose>
+  </refnamediv>
+
+  <refsynopsisdiv>
+    <cmdsynopsis>
+      <command>{{executable_name}}</command>
+        <arg choice="opt" rep="repeat">OPTIONS</arg>
+      </cmdsynopsis>
+  </refsynopsisdiv>
+
+  <refsect1>
+    <title>Description</title>
+    <!-- Insert the program options here -->
+    <para>Insert full description here</para>
+  </refsect1>
+
+  <refsect1>
+    <title>Options</title>
+
+    <para>The following options are understood:</para>
+
+    <!-- Insert the program options here -->
+    <variablelist>
+      <varlistentry>
+        <term><option>--dummy</option></term>
+        <listitem><para>Dummy option</para></listitem>
+      </varlistentry>
+    </variablelist>
+
+  </refsect1>
+</refentry>
+
+<!-- vim: set ts=2 sts=2 sw=2 et ai : -->

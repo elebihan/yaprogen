@@ -1,0 +1,12 @@
+SUBDIRS = {{project_normalized}} tools po doc
+
+if BUILD_MANPAGES
+SUBDIRS += man
+endif
+
+EXTRA_DIST = \
+	autogen.sh
+
+ACLOCAL_AMFLAGS = -I m4
+
+DISTCHECK_CONFIGURE_FLAGS = --enable-gtk-doc

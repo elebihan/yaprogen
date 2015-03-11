@@ -1,0 +1,10 @@
+bin_PROGRAMS = {{executable_name}}
+
+{{executable_lower}}_SOURCES = \
+	main.c
+
+{{executable_lower}}_LDADD = \
+	$({{project_upper}}_LIBS)
+
+AM_CPPFLAGS = \
+	$({{project_upper}}_CFLAGS)

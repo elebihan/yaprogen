@@ -1,0 +1,87 @@
+lib_LTLIBRARIES = {{library_name}}-@{{api_upper}}_API_VERSION@.la
+
+AM_CFLAGS = -Wall -Werror -Wformat-security
+
+AM_CPPFLAGS = \
+	-I $(top_srcdir) \
+	$({{api_upper}}_CFLAGS)
+
+{{library_lower}}_@{{api_upper}}_API_VERSION@_la_DEPENDENCIES =
+
+{{library_lower}}_@{{api_upper}}_API_VERSION@_la_LDFLAGS = \
+	-export-dynamic \
+	$({{api_upper}}_LT_LDFLAGS)
+
+{{library_lower}}_@{{api_upper}}_API_VERSION@_la_LIBADD = \
+	$({{api_upper}}_LIBS)
+
+{{library_lower}}_h = \
+	{{api_name}}.h
+
+{{library_lower}}_@{{api_upper}}_API_VERSION@_la_SOURCES = \
+	{{api_name}}.c \
+	$({{library_lower}}_@{{api_upper}}_API_VERSION@_built_sources)
+
+CLEANFILES =
+
+EXTRA_DIST =
+
+{{#is_cross_platform}}
+if PLATFORM_WIN32
+
+AM_V_WINDRES = $(AM_V_WINDRES_$(V))
+AM_V_WINDRES_ = $(AM_V_WINDRES_$(AM_DEFAULT_VERBOSITY))
+AM_V_WINDRES_0 = @echo "  WRES  " $@;
+
+{{project_normalized}}-win32-res.o: {{project_normalized}}.rc
+	$(AM_V_WINDRES)$(WINDRES) $< $@
+
+{{library_lower}}_@{{api_upper}}_API_VERSION@_la_DEPENDENCIES += {{project_normalized}}-win32-res.o
+{{library_lower}}_@{{api_upper}}_API_VERSION@_la_LDFLAGS += -Wl,{{project_normalized}}-win32-res.o
+
+EXTRA_DIST += {{project_normalized}}.rc.in
+
+endif
+{{/is_cross_platform}}
+
+includedir = @includedir@/{{project_normalized}}-@{{api_upper}}_API_VERSION@/{{project_normalized}}
+include_HEADERS = $({{library_lower}}_h)
+
+pkgconfigdir = $(libdir)/pkgconfig
+pkgconfig_DATA = \
+	{{project_normalized}}-@{{api_upper}}_API_VERSION@.pc
+
+{{project_normalized}}-@{{api_upper}}_API_VERSION@.pc: {{project_normalized}}.pc
+	$(QUIET_GEN)cp -f $< $(@F)
+
+if HAVE_INTROSPECTION
+
+INTROSPECTION_GIRS = {{api_camel}}-@{{api_upper}}_API_VERSION@.gir
+INTROSPECTION_SCANNER_ARGS = --warn-all
+INTROSPECTION_COMPILER_ARGS =
+
+{{api_camel}}-@{{api_upper}}_API_VERSION@.gir: {{library_name}}-@{{api_upper}}_API_VERSION@.la Makefile
+{{api_camel}}_@{{api_upper}}_API_VERSION_AM@_gir_VERSION = @{{api_upper}}_API_VERSION@
+{{api_camel}}_@{{api_upper}}_API_VERSION_AM@_gir_INCLUDES = GLib-2.0 GObject-2.0 Gio-2.0
+{{api_camel}}_@{{api_upper}}_API_VERSION_AM@_gir_CFLAGS = $(AM_CPPFLAGS)
+{{api_camel}}_@{{api_upper}}_API_VERSION_AM@_gir_LIBS = {{library_name}}-@{{api_upper}}_API_VERSION@.la
+{{api_camel}}_@{{api_upper}}_API_VERSION_AM@_gir_EXPORT_PACKAGES = {{project_normalized}}-@{{api_upper}}_API_VERSION@
+{{api_camel}}_@{{api_upper}}_API_VERSION_AM@_gir_SCANNERFLAGS = \
+	--c-include="{{project_normalized}}/{{api_name}}.h" \
+	--identifier-prefix={{api_camel}} \
+	--verbose
+{{api_camel}}_@{{api_upper}}_API_VERSION_AM@_gir_FILES = \
+	$(include_HEADERS) \
+	$({{library_lower}}_la_SOURCES)
+
+girdir = $(datadir)/gir-1.0
+gir_DATA = $(INTROSPECTION_GIRS)
+
+typelibdir = $(libdir)/girepository-1.0
+typelib_DATA = $(INTROSPECTION_GIRS:.gir=.typelib)
+
+CLEANFILES += $(gir_DATA) $(typelib_DATA)
+
+endif
+
+-include $(INTROSPECTION_MAKEFILE)
