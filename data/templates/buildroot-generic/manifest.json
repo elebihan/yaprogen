@@ -1,0 +1,10 @@
+{
+    "name": "buildroot-generic",
+    "description": "Buildroot package (generic Makefile)",
+    "author": "Eric Le Bihan",
+    "variables": [
+        "pkg_version",
+        "pkg_site",
+        "pkg_license"
+    ]
+}

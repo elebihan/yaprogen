@@ -1,0 +1,10 @@
+{
+    "name": "buildroot-autotools",
+    "description": "Buildroot package (using Autotools)",
+    "author": "Eric Le Bihan",
+    "variables": [
+        "pkg_version",
+        "pkg_site",
+        "pkg_license"
+    ]
+}
