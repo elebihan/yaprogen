@@ -1,0 +1,18 @@
+################################################################################
+#
+# {{project_lower}}
+#
+################################################################################
+
+{{project_upper}}_VERSION = {{pkg_version}}
+{{project_upper}}_SITE = {{pkg_site}}
+{{project_upper}}_LICENSE = {{pkg_license}}
+{{project_upper}}_LICENSE_FILES = LICENSE
+
+define {{project_upper}}_BUILD_CMDS
+endef
+
+define {{project_upper}}_INSTALL_TARGET_CMDS
+endef
+
+$(eval $(generic-package))

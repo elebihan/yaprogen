@@ -1,0 +1,14 @@
+PROGRAM = {{executable_name}}.exe
+SOURCES = {{executable_camel}}.cs
+MCS     = dmcs
+
+all: $(PROGRAM)
+
+clean:
+	@rm -f $(PROGRAM)
+
+$(PROGRAM): $(SOURCES)
+	$(MCS) $< -out:$@
+
+.PHONY: $(PROGRAM)
+

@@ -1,0 +1,49 @@
+/*
+ * This file is part of {{project_name}}
+ *
+ * {{copyright_notice}}
+ *
+{{#license_notice}}
+ * {{line}}
+{{/license_notice}}
+ */
+
+#include <stdlib.h>
+#include <glib/gi18n.h>
+#include <{{api_name}}.h>
+#include "config.h"
+
+int main(int argc, char *argv[])
+{
+	static gboolean show_version = FALSE;
+	static GOptionEntry entries[] = {
+		{ "version", 'V', 0, G_OPTION_ARG_NONE, &show_version,
+		  N_("Show the version of the program"), NULL },
+		/* Insert your options here */
+		{ NULL, },
+	};
+
+	GOptionContext *context = NULL;
+	GError *error = NULL;
+
+	context = g_option_context_new(NULL);
+	g_option_context_add_main_entries(context, entries, NULL);
+	if (!g_option_context_parse(context, &argc, &argv, &error)) {
+		g_printerr(_("Invalid option (%s)\n"), error->message);
+		g_error_free(error);
+		exit(1);
+	}
+	g_option_context_free(context);
+
+	if (show_version) {
+		g_print(PACKAGE_VERSION "\n");
+		return 0;
+	}
+
+	/* Remove this dummy code */
+	{{api_lower}}_dummy();
+
+	/* Insert your code here */
+
+	return 0;
+}

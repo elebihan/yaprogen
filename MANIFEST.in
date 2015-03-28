@@ -1,0 +1,12 @@
+include AUTHORS
+include COPYING
+include CHANGELOG.rst
+include HACKING.rst
+include README.rst
+include disthelpers.py
+include extra/nonreg
+recursive-include data *
+recursive-include extra *
+recursive-include man *
+recursive-include po *.po
+recursive-include shell-completion/zsh _*

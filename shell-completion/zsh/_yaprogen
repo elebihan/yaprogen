@@ -1,0 +1,65 @@
+#compdef yaprogen
+
+_yaprogen_list_all_templates()
+{
+    _yaprogen_all_templates=( $(yaprogen list | { while read a b c; do echo -E - " $a"; done; }) )
+}
+
+(( $+functions[_yaprogen_list] )) || _yaprogen_list()
+{
+    _arguments -w -S -s \
+        '(-d --details)'{-d,--details}'[display details about each template]'
+}
+
+(( $+functions[_yaprogen_create] )) || _yaprogen_create()
+{
+    _arguments -w -S -s \
+        '(-a --author)'{-a,--author}'[set author name]:name' \
+        '(-c --copyright-holder)'{-c,--copyright-holder}'[set copyright holder]:name' \
+        '(-C --company)'{-C,--company}'[set company name]:name' \
+        '(-d --description)'{-d,--description}'[set short description of the project]:text' \
+        '(-e --email)'{-e,--email}'[set email address of the author]:address' \
+        '(-l --license)'{-l,--license}'[set license of the project]:license' \
+        '(-o --output)'{-o,--output}'[set output directory]:dir:_directories' \
+        '(-p --cross-platform)'{-p,--cross-platform}'[enable cross-platform support in template]' \
+        '(-q --quiet)'{-q,--quiet}'[be quiet]' \
+        '(-O --override)'{-O,--override}'[override value of variable K with V]:kv' \
+        '1: :->template' \
+        '2: :_guard "^-*" project'
+
+    if [[ "$state" == template ]]; then
+        _yaprogen_list_all_templates
+        compadd -a _yaprogen_all_templates
+    fi
+}
+
+(( $+functions[_yaprogen_command] )) || _yaprogen_command()
+{
+    local -a _yaprogen_cmds
+    _yaprogen_cmds=(
+        "list:list available templates"
+        "create:create a new project"
+    )
+    if (( CURRENT == 1 )); then
+        _describe -t commands 'yaprogen command' _yaprogen_cmds || compadd "$@"
+    else
+        local curcontext="$curcontext"
+
+        cmd="${${_yaprogen_cmds[(r)$words[1]:*]%%:*}}"
+
+    if (( $#cmd )); then
+            curcontext="${curcontext%:*:*}:yaprogen-${cmd}:"
+
+            _call_function ret _yaprogen_$cmd || _message 'no more arguments'
+        else
+            _message "unknown yaprogen command: $words[1]"
+        fi
+        return ret
+    fi
+}
+
+_arguments -w -S -s \
+    '(-v --version)'{-v,--version}'' \
+    '*::yaprogen command:_yaprogen_command'
+
+# vim: ts=4 sts=4 sw=4 et ai

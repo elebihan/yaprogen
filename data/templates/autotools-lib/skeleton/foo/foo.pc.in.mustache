@@ -1,0 +1,12 @@
+prefix=@prefix@
+exec_prefix=@exec_prefix@
+libdir=@libdir@
+includedir=@includedir@
+apiversion=@{{api_upper}}_API_VERSION@
+
+Name: {{project_name}}
+Description: {{description}}
+Version: @VERSION@
+Requires:
+Libs: -L${libdir} -l{{link_name}}-${apiversion}
+Cflags: -I${includedir} -I${includedir}/{{project_normalized}}-${apiversion}/

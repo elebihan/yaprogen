@@ -1,0 +1,35 @@
+# MAN pages generation
+{{=!! !!=}}
+
+set(MAN_FILES
+    !!executable_name!!.1)
+
+set(MAN_DEPENDS)
+
+foreach(_man ${MAN_FILES})
+    get_filename_component(_basename ${_man} NAME_WE)
+    set(_xml     "${CMAKE_CURRENT_SOURCE_DIR}/${_basename}.xml")
+    set(_manpage "${CMAKE_CURRENT_BINARY_DIR}/${_man}")
+
+    add_custom_command(OUTPUT ${_manpage}
+                       COMMAND ${XMLTO}
+                       --skip-validation
+                       -o ${CMAKE_CURRENT_BINARY_DIR}
+                       man ${_xml}
+                       MAIN_DEPENDENCY ${_xml}
+                       COMMENT "Generating ${_manpage}")
+
+    list(APPEND MAN_DEPENDS ${_manpage})
+
+    # Get the MAN section number from input filename
+    string(LENGTH ${_man} _len)
+    math(EXPR _len ${_len}-1)
+    string(SUBSTRING ${_man} ${_len} 1 _section)
+
+    install(FILES ${_man} DESTINATION share/man/man${_section})
+
+endforeach(_man)
+
+add_custom_target(man ALL DEPENDS ${MAN_DEPENDS})
+
+# vim: ts=4 sts=4 sw=4 et ai

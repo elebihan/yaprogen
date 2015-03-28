@@ -1,0 +1,72 @@
+# Top-level CMake configuration file
+cmake_minimum_required(VERSION 2.8 FATAL_ERROR)
+
+{{=!! !!=}}
+# Give our project a name
+project(!!project_normalized!!)
+
+# Define some variables for versioning
+set(!!project_upper!!_VERSION_MAJOR 0)
+set(!!project_upper!!_VERSION_MINOR 1)
+set(!!project_upper!!_VERSION_MICRO 1)
+set(!!project_upper!!_VERSION ${!!project_upper!!_VERSION_MAJOR}.${!!project_upper!!_VERSION_MINOR}.${!!project_upper!!_VERSION_MICRO})
+
+# Add the usual definitions from package naming
+set(PACKAGE !!project_normalized!!)
+set(PACKAGE_NAME !!project_name!!)
+set(PACKAGE_VERSION "${!!project_upper!!_VERSION}")
+set(PACKAGE_VERSION_MAJOR ${!!project_upper!!_VERSION_MAJOR})
+set(PACKAGE_VERSION_MINOR ${!!project_upper!!_VERSION_MINOR})
+set(PACKAGE_VERSION_REVISION ${!!project_upper!!_VERSION_MICRO})
+
+# Tell CMake to load some macros
+include(CheckIncludeFile)
+include(CheckCSourceCompiles)
+include(CheckLibraryExists)
+include(FindPkgConfig)
+
+# Tell CMake to create 'config.h'
+# Unlike autoheader, you have to provide a template file
+configure_file(${CMAKE_CURRENT_SOURCE_DIR}/config.h.cmake
+               ${CMAKE_CURRENT_BINARY_DIR}/config.h)
+
+# ...and we want to find 'config.h' when compiling
+include_directories(${CMAKE_CURRENT_BINARY_DIR})
+
+# Check for some tools
+message(STATUS "Looking for xmlto")
+find_program (XMLTO "xmlto")
+if(NOT_XMLTO)
+  message(FATAL_ERROR "Can not find xmlto")
+endif(NOT_XMLTO)
+
+# CPack allows to build an archive of the surce code or of the binary programs.
+# See http://www.cmake.org/Wiki/CMake:CPackConfiguration
+set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "!!description!!")
+set(CPACK_PACKAGE_VENDOR "!!author_name!!")
+set(CPACK_PACKAGE_DESCRIPTION_FILE ${README})
+set(CPACK_PACKAGE_VERSION_MAJOR ${!!project_upper!!_VERSION_MAJOR})
+set(CPACK_PACKAGE_VERSION_MINOR ${!!project_upper!!_VERSION_MINOR})
+set(CPACK_PACKAGE_VERSION_MICRO ${!!project_upper!!_VERSION_MICRO})
+set(CPACK_GENERATOR "TGZ")
+set(CPACK_SOURCE_GENERATOR "TGZ")
+# Yeah, I know: lots of things to get rid of...in case someone builds
+# from the source directory.
+set(CPACK_SOURCE_IGNORE_FILES "_CPack_Packages"
+                              ".svn;.swp;..git;;\#"
+                              "CPack*"
+                              ".tar.gz"
+                              "CMakeCache.txt"
+                              "cmake_install.cmake"
+                              "CMakeFiles"
+                              "Makefile"
+                              "config.h"
+                              "install_manifest.txt")
+
+include(CPack)
+
+# Tell CMake to look for CMakeLists.txt files in subdirectories
+add_subdirectory(src)
+add_subdirectory(man)
+
+# vim: ts=4 sts=4 sw=4 et ai

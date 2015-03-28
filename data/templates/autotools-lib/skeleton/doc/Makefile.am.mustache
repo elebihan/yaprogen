@@ -1,0 +1,42 @@
+AM_V_DOXYGEN = $(AM_V_DOXYGEN_$(V))
+AM_V_DOXYGEN_ = $(AM_V_DOXYGEN_$(AM_DEFAULT_VERBOSITY))
+AM_V_DOXYGEN_0 = @echo "  DOXYGEN    " $<;
+
+DOXINPUTS = \
+	$(top_srcdir)/{{project_normalized}}/{{api_name}}.h
+
+EXTRADIST = \
+	{{project_normalized}}.doxygen.in
+
+CLEANFILES = doxygen-build.stamp
+
+if BUILD_API_DOCS
+all-local: doxygen-build.stamp
+install-data-local: install-html-local install-man-local
+else
+all-local:
+install-data-local:
+endif
+
+doxygen-build.stamp: {{project_normalized}}.doxygen $(DOXINPUTS)
+	$(AM_V_DOXYGEN)$(DOXYGEN) $< && touch $@
+
+install-html-local:
+	$(mkinstalldirs) $(DESTDIR)$(docdir)/html
+	$(mkinstalldirs) $(DESTDIR)$(docdir)/html/search
+	for f in $$(find html -type f \! -name "installdox"); do \
+		$(INSTALL_DATA) $$f $(DESTDIR)$(docdir)/$$f; \
+	done
+
+install-man-local:
+	$(INSTALL) -d $(DESTDIR)$(mandir)/man3
+	cd man && find man3 -type f -name {{api_name}}*.3 \
+		-exec $(INSTALL_DATA) \{} $(DESTDIR)$(mandir)/man3 \;
+
+clean-local:
+	$(RM) -r html
+	$(RM) -r man
+
+uninstall-local:
+	$(RM) -r $(DESTDIR)$(docdir)/html
+	$(RM) $(DESTDIR)$(mandir)/man3/{{api_name}}*.3

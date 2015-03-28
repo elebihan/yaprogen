@@ -1,0 +1,38 @@
+{{=!! !!=}}
+
+if(ENABLE_API_DOCS)
+    find_package(Doxygen)
+    if(DOXYGEN_FOUND)
+        set(DOXYGEN_LANGUAGE "English"
+            CACHE STRING "Language used by doxygen")
+        mark_as_advanced(DOXYGEN_LANGUAGE)
+
+        set(top_srcdir ${CMAKE_SOURCE_DIR})
+        configure_file(!!project_normalized!!.doxygen.in
+                       ${CMAKE_CURRENT_BINARY_DIR}/!!project_normalized!!.doxygen
+                       @ONLY)
+
+        set(API_DOCS "api-docs")
+        add_custom_target(${API_DOCS} ALL
+               ${DOXYGEN_EXECUTABLE} ${CMAKE_CURRENT_BINARY_DIR}/!!project_normalized!!.doxygen
+               COMMENT "Generating API documentation"
+               VERBATIM
+               DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/!!project_normalized!!.doxygen)
+
+        install(DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/html
+                DESTINATION ${CMAKE_INSTALL_PREFIX}/share/doc/${PACKAGE_NAME}
+                COMPONENT ${API_DOCS}
+                FILES_MATCHING PATTERN "*.html"
+                               PATTERN "*.png"
+                               PATTERN "*.js"
+                               PATTERN "*.css")
+
+
+        install(DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/man/man3
+                DESTINATION ${CMAKE_INSTALL_PREFIX}/share/man/man3
+                COMPONENT ${API_DOCS}
+                FILES_MATCHING PATTERN "!!api_name!!*.3")
+    else(DOXYGEN_FOUND)
+        message(FATAL_ERROR "could not find Doxygen program")
+    endif(DOXYGEN_FOUND)
+endif(ENABLE_API_DOCS)
