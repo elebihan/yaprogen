@@ -1,6 +1,14 @@
 Changelog
 =========
 
+[unreleased] - Unreleased
+-------------------------
+
+Changed
+~~~~~~~
+
+- python-app: use setuptools entry points.
+
 [0.2.0] - 2015-03-28
 --------------------
 
