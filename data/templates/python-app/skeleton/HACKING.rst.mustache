@@ -24,5 +24,3 @@ To compile the all catalogs, use::
 To update the catalog for locale <locale>, use::
 
   $ PYTHONPATH=. ./setup.py update_catalog --locale <locale>
-
-.. vim: ft=rst
