@@ -17,7 +17,7 @@ for project in "${PROJECTS[@]}"; do
         echo "** Generating $project using $template **"
         prefix=$(echo $DESTDIR/$template/$project | sed 's/ /-/g')
         workdir=$(echo $OUTDIR/$template/$project | sed 's/ /-/g')
-        PYTHONPATH=. ./scripts/yaprogen create -o "$workdir" "$template" "$project"
+        yaprogen create -o "$workdir" "$template" "$project"
         (cd "$workdir";
             if [ -f CMakeLists.txt ]; then
                 cmake . -DCMAKE_INSTALL_PREFIX="$prefix"
