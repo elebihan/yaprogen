@@ -3,5 +3,5 @@
 # Example:
 #
 # menu "Baz"
-# source "$BR2_EXTERNAL/package/foo/Config.in"
+# source "$BR2_EXTERNAL/package/xyz/Config.in"
 # endmenu

@@ -185,18 +185,18 @@ class Generator(object):
         path = os.path.join(self._template.path, 'skeleton')
 
         subs = {
-            'foo-api': 'api_name',
-            'foo_api': 'api_lower',
-            'FOO_API': 'api_upper',
-            'FooApi': 'api_camel',
-            'foo-exec': 'executable_name',
-            'foo_exec': 'executable_lower',
-            'FOO_EXEC': 'executable_upper',
-            'FooExec': 'executable_camel',
-            'foo-lib': 'library_name',
-            'foo_lib': 'library_lower',
-            'FOO_LIB': 'library_upper',
-            'FooLib': 'library_camel',
+            'xyz-api': 'api_name',
+            'xyz_api': 'api_lower',
+            'XYZ_API': 'api_upper',
+            'XyzApi': 'api_camel',
+            'xyz-exec': 'executable_name',
+            'xyz_exec': 'executable_lower',
+            'XYZ_EXEC': 'executable_upper',
+            'XyzExec': 'executable_camel',
+            'xyz-lib': 'library_name',
+            'xyz_lib': 'library_lower',
+            'XYZ_LIB': 'library_upper',
+            'XyzLib': 'library_camel',
         }
 
         for filename in self._template.files:
@@ -204,7 +204,7 @@ class Generator(object):
             if target.endswith('.mustache'):
                 for k, v in subs.items():
                     target = target.replace(k, self._values[v])
-                target = target.replace('foo',
+                target = target.replace('xyz',
                                         self._values['project_normalized'])
                 target = target.replace('.mustache', '')
                 self._convert_file(filename, target)
