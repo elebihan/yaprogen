@@ -8,25 +8,65 @@
 # {{line}}
 {{/license_notice}}
 
+"""
+   {{library_lower}}.cli
+   `````````````````````
+
+   Provides command line interpeter helpers
+
+   :copyright: (C) {{year}} {{copyright_holder}}
+   :license: {{license_alias}}
+"""
+
 import os
 import argparse
+import traceback
 from {{library_lower}} import __version__
 from {{library_lower}}.utils import setup_i18n
+from {{library_lower}}.log import setup_logging, set_level
+from {{library_lower}}.log import error
 from gettext import gettext as _
 
 setup_i18n()
 
+setup_logging()
 
-def main():
-    parser = argparse.ArgumentParser()
-    parser.add_argument('-v', '--version',
-                        action='version',
-                        version=__version__)
+
+class Application:
+    """Command line Application"""
+    def __init__(self):
+        self._parser = argparse.ArgumentParser()
+        self._parser.add_argument('-v', '--version',
+                                  action='version',
+                                  version=__version__)
+        self._parser.add_argument('-D', '--debug',
+                                  action='store_true',
+                                  default=False,
+                                  help=_("show debug messages"))
 
     # Insert the program options here
 
-    args = parser.parse_args()
+    def run(self):
+        """Run the application"""
+        args = self._parser.parse_args()
 
-    # Insert code here
+        if args.debug:
+            set_level('DEBUG')
+
+        try:
+            rc = 0
+            # Insert code here
+        except Exception as e:
+            rc = 1
+            if '{{library_upper}}_SHOW_STACK_TRACES' in os.environ:
+                traceback.print_exc()
+            else:
+                error(_("Command failed ({})").format(e))
+        self._parser.exit(rc)
+
+
+def main():
+    app = Application()
+    app.run()
 
 # vim: ts=4 sw=4 sts=4 et ai
