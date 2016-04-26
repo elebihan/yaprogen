@@ -11,7 +11,7 @@
 
 from setuptools import setup, find_packages
 from disthelpers import extract_messages, init_catalog, update_catalog
-from disthelpers import build, build_catalog, build_man
+from disthelpers import build, build_catalog, build_man, build_html
 import glob
 import fnmatch
 import os
@@ -44,6 +44,7 @@ setup(name='{{project_normalized}}',
       author_email='{{author_email}}',
       cmdclass={'build': build,
                 'build_man': build_man,
+                'build_html': build_html,
                 'extract_messages': extract_messages,
                 'init_catalog': init_catalog,
                 'update_catalog': update_catalog,
