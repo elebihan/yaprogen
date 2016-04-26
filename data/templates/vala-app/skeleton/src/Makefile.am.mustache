@@ -1,0 +1,29 @@
+bin_PROGRAMS = {{executable_name}}
+
+vapidir = ../vapi
+
+vala_files = \
+	main.vala
+
+{{executable_lower}}_SOURCES = \
+	$(vala_files) \
+	$(vapidir)/config.vapi
+
+{{executable_lower}}_LDADD = \
+	$({{project_upper}}_LIBS)
+
+AM_CPPFLAGS = \
+	-include config.h \
+	-DLOCALE_DIR=\""$(datadir)/locale"\" \
+	-DDATA_DIR=\""$(datadir)"\" \
+	$({{project_upper}}_CFLAGS)
+
+AM_VALAFLAGS = \
+	--pkg posix \
+	--pkg glib-2.0
+
+MAINTAINERCLEANFILES = \
+	$(vala_files:.vala=.c) \
+	{{executable_lower}}.stamp
+
+CLEANFILES = $(BUILT_SOURCES)
