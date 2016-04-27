@@ -11,10 +11,7 @@
 
 from setuptools import setup, find_packages
 from disthelpers import extract_messages, init_catalog, update_catalog
-from disthelpers import build, build_catalog, build_man
-import glob
-import fnmatch
-import os
+from disthelpers import build, build_catalog, build_man, build_html
 import {{library_lower}}
 
 setup(name='{{project_normalized}}',
@@ -27,7 +24,9 @@ setup(name='{{project_normalized}}',
       url='https://some.url/',
       platforms=['Any'],
       keywords=[],
-      install_requires=[],
+      install_requires=[
+          'colorama>=0.3',
+      ],
       classifiers=[
           'Development Status :: 3 - Alpha',
           'Programming Language :: Python :: 3',
@@ -44,6 +43,7 @@ setup(name='{{project_normalized}}',
       author_email='{{author_email}}',
       cmdclass={'build': build,
                 'build_man': build_man,
+                'build_html': build_html,
                 'extract_messages': extract_messages,
                 'init_catalog': init_catalog,
                 'update_catalog': update_catalog,
