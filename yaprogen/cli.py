@@ -32,12 +32,16 @@ setup_i18n()
 
 
 def parse_cmd_list(args):
-    for template in list_available_templates():
-        if args.with_details:
-            text = "{0.name:<24} -- {0.description:<48} -- {0.path}"
-        else:
-            text = "{0.name:<24} -- {0.description:<48}"
-        print(text.format(template))
+    if args.kind == 'templates':
+        for template in list_available_templates():
+            if args.with_details:
+                text = "{0.name:<24} -- {0.description:<48} -- {0.path}"
+            else:
+                text = "{0.name:<24} -- {0.description:<48}"
+            print(text.format(template))
+    elif args.kind == 'licenses':
+        for license in list_available_licenses():
+            print(license)
 
 
 def parse_cmd_create(args):
@@ -71,6 +75,11 @@ def main():
     subparsers = parser.add_subparsers(dest='command')
     p = subparsers.add_parser('list',
                               help=_('list available templates'))
+    p.add_argument('kind',
+                   nargs='?',
+                   choices=('licenses', 'templates'),
+                   default='templates',
+                   help=_('kind of objects to list'))
     p.add_argument('-d', '--details',
                    dest='with_details',
                    action='store_true',
