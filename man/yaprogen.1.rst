@@ -15,7 +15,7 @@ SYNOPSIS
 
 yaprogen [OPTIONS] <command> [<arg>, ...]
 
-yaprogen list
+yaprogen list [licenses|templates]
 
 yaprogen create [OPTIONS] <template> <project name>
 
@@ -68,11 +68,11 @@ COMMANDS
 
 The following commands are available:
 
-list [OPTIONS]
-~~~~~~~~~~~~~~
+list [OPTIONS] [licenses|templates]
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-List all the availables templates. Use the *--details* option to see the
-source directory of each template.
+List all the available templates (default) or licenses. Use the *--details*
+option to see the source directory of each template.
 
 Options:
 
@@ -108,4 +108,3 @@ SEE ALSO
 
 - ``yaprogen.conf(5)``
 - ``yaprogentut(7)``
-
