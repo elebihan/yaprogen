@@ -1,5 +1,8 @@
 {
-	"name": "buildroot-ext",
-	"description": "Buildroot external customisation",
-	"author": "Eric Le Bihan"
+    "name": "buildroot-ext",
+    "description": "Buildroot external customisation",
+    "author": "Eric Le Bihan",
+    "variables" : [
+        "ext_desc"
+    ]
 }
