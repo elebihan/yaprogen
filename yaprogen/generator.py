@@ -140,6 +140,8 @@ class Generator(object):
             'copyright_notice': copyright_notice,
             'copyright_holder': self.copyright_holder,
             'year': datetime.now().year,
+            'month': datetime.now().strftime("%B"),
+            'day': datetime.now().day,
             'author_name': self.author,
             'author_firstname': firstname,
             'author_surname': surname,
