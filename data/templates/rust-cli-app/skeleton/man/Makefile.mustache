@@ -1,0 +1,20 @@
+-include ../config.mk
+-include ../common.mk
+
+MAN1 = {{executable_name}}.1
+MANPAGES = $(MAN1)
+
+all: $(MANPAGES)
+
+install: $(MANPAGES)
+	$(Q)install -d $(DESTDIR)$(datadir)/man/man1
+	$(Q)install -m 0644 $^ $(DESTDIR)$(datadir)/man/man1
+
+clean:
+	$(Q)rm -f $(MANPAGES)
+
+%.1: %.1.md
+	$(Q)$(PANDOC) -s -f markdown -t man -o $@ $<
+
+.PHONY: all clean install
+

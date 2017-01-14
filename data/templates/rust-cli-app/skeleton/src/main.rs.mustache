@@ -1,0 +1,26 @@
+//
+// This file is part of {{project_name}}
+//
+// {{copyright_notice}}
+//
+{{#license_notice}}
+// {{line}}
+{{/license_notice}}
+//
+
+#[macro_use]
+extern crate clap;
+
+#[macro_use]
+mod {{library_lower}};
+
+use clap::{App};
+
+fn main() {
+    let matches = App::new("{{executable_name}}")
+        .version(env!("CARGO_PKG_VERSION"))
+        .about("{{description}}")
+        .author("{{author_name}} <{{author_email}}>")
+        .get_matches();
+    std::process::exit(0);
+}
