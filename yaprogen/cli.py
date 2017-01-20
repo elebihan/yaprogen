@@ -61,6 +61,7 @@ def parse_cmd_create(args):
     gen.company = args.company or config.company_name
     gen.email = args.email or config.author_email
     gen.description = args.description
+    gen.homepage = args.homepage
     gen.copyright_holder = args.copyright_holder
     gen.license = args.license or config.preferred_license
     gen.enable_cross_platform = args.cross_platform
@@ -104,6 +105,9 @@ def main():
     p.add_argument('-e', '--email',
                    metavar=_('ADDRESS'),
                    help=_('set email address of the author'))
+    p.add_argument('-H', '--homepage',
+                   metavar=_('URL'),
+                   help=_('set URL of project homepage'))
     p.add_argument('-l', '--license',
                    metavar=_('LICENSE'),
                    choices=list_available_licenses(),
