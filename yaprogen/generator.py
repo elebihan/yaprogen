@@ -80,6 +80,7 @@ class Generator(object):
         self.copyright_holder = None
         self.email = None
         self.company = None
+        self.homepage = None
         self.quiet = False
         self.enable_cross_platform = False
         self._values = {}
@@ -132,6 +133,7 @@ class Generator(object):
                 notice_lines.append({'line': line})
 
         description = self.description or _("Insert description here")
+        homepage = self.homepage or "https://some/where"
 
         self._values = {
             'description': description,
@@ -147,6 +149,7 @@ class Generator(object):
             'author_surname': surname,
             'author_email': self.email,
             'company_name': self.company,
+            'homepage': self.homepage,
             'project_name': self._name,
             'project_normalized': normalize(self._name),
             'project_lower': lower(self._name),
