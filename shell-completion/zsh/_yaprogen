@@ -25,6 +25,7 @@ _yaprogen_list_all_templates()
         '(-C --company)'{-C,--company}'[set company name]:name' \
         '(-d --description)'{-d,--description}'[set short description of the project]:text' \
         '(-e --email)'{-e,--email}'[set email address of the author]:address' \
+        '(-H --homepage)'{-H,--homepage}'[set URL of the project homepage]:URL' \
         '(-l --license)'{-l,--license}'[set license of the project]:license:->license' \
         '(-o --output)'{-o,--output}'[set output directory]:dir:_directories' \
         '(-p --cross-platform)'{-p,--cross-platform}'[enable cross-platform support in template]' \
