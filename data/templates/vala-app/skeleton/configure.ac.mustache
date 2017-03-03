@@ -1,6 +1,7 @@
 AC_PREREQ(2.59)
 AC_INIT([{{project_name}}], [0.1.1])
 AC_CONFIG_SRCDIR([src/main.vala])
+AC_CONFIG_HEADERS([config.h])
 AC_CONFIG_MACRO_DIR([m4])
 
 AM_INIT_AUTOMAKE([1.11 -Wall -Wno-portability tar-ustar dist-xz no-dist-gzip])
@@ -82,7 +83,6 @@ AC_DEFINE_UNQUOTED([GETTEXT_PACKAGE],
 # Generate files from *.in
 #####################################################################
 
-AC_CONFIG_HEADERS([config.h])
 AC_CONFIG_FILES([
     Makefile
     man/Makefile

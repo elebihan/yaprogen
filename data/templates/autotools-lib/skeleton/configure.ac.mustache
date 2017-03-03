@@ -45,6 +45,7 @@ AC_PREREQ(2.59)
 AC_INIT([{{project_name}}],
         [{{api_lower}}_version])
 AC_CONFIG_SRCDIR([{{library_name}}/{{api_name}}.h])
+AC_CONFIG_HEADERS([config.h])
 AC_CONFIG_MACRO_DIR([m4])
 
 AM_INIT_AUTOMAKE([1.11 -Wall -Wno-portability tar-ustar dist-xz no-dist-gzip])
@@ -182,7 +183,6 @@ AM_CONDITIONAL([BUILD_TOOLS], [test "x$enable_tools" != "xno"])
 # Generate files from *.in
 #####################################################################
 
-AC_CONFIG_HEADERS([config.h])
 AC_CONFIG_FILES([
     Makefile
     doc/Makefile
