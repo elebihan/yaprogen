@@ -33,23 +33,23 @@ AM_V_WINDRES = $(AM_V_WINDRES_$(V))
 AM_V_WINDRES_ = $(AM_V_WINDRES_$(AM_DEFAULT_VERBOSITY))
 AM_V_WINDRES_0 = @echo "  WRES  " $@;
 
-{{project_normalized}}-win32-res.o: {{project_normalized}}.rc
+{{library_name}}-win32-res.o: {{library_name}}.rc
 	$(AM_V_WINDRES)$(WINDRES) $< $@
 
-{{library_lower}}_@{{api_upper}}_API_VERSION@_la_DEPENDENCIES += {{project_normalized}}-win32-res.o
-{{library_lower}}_@{{api_upper}}_API_VERSION@_la_LDFLAGS += -Wl,{{project_normalized}}-win32-res.o
+{{library_lower}}_@{{api_upper}}_API_VERSION@_la_DEPENDENCIES += {{library_name}}-win32-res.o
+{{library_lower}}_@{{api_upper}}_API_VERSION@_la_LDFLAGS += -Wl,{{library_name}}-win32-res.o
 
-EXTRA_DIST += {{project_normalized}}.rc.in
+EXTRA_DIST += {{library_name}}.rc.in
 
 endif
 {{/is_cross_platform}}
 
-includedir = @includedir@/{{project_normalized}}-@{{api_upper}}_API_VERSION@/{{project_normalized}}
+includedir = @includedir@/{{library_name}}-@{{api_upper}}_API_VERSION@/{{library_name}}
 include_HEADERS = $({{library_lower}}_h)
 
 pkgconfigdir = $(libdir)/pkgconfig
 pkgconfig_DATA = \
-	{{project_normalized}}-@{{api_upper}}_API_VERSION@.pc
+	{{library_name}}-@{{api_upper}}_API_VERSION@.pc
 
-{{project_normalized}}-@{{api_upper}}_API_VERSION@.pc: {{project_normalized}}.pc
+{{library_name}}-@{{api_upper}}_API_VERSION@.pc: {{library_name}}.pc
 	$(QUIET_GEN)cp -f $< $(@F)

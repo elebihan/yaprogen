@@ -44,7 +44,7 @@ m4_define([{{api_lower}}_api_version],
 AC_PREREQ(2.59)
 AC_INIT([{{project_name}}],
         [{{api_lower}}_version])
-AC_CONFIG_SRCDIR([{{project_normalized}}/{{api_name}}.h])
+AC_CONFIG_SRCDIR([{{library_name}}/{{api_name}}.h])
 AC_CONFIG_MACRO_DIR([m4])
 
 AM_INIT_AUTOMAKE([1.11 -Wall -Wno-portability tar-ustar dist-xz no-dist-gzip])
@@ -186,11 +186,11 @@ AC_CONFIG_HEADERS([config.h])
 AC_CONFIG_FILES([
     Makefile
     doc/Makefile
-    doc/{{project_normalized}}.doxygen
-    {{project_normalized}}/Makefile
-    {{project_normalized}}/{{project_normalized}}.pc
+    doc/{{library_name}}.doxygen
+    {{library_name}}/Makefile
+    {{library_name}}/{{library_name}}.pc
 {{#is_cross_platform}}
-    {{project_normalized}}/{{project_normalized}}.rc
+    {{library_name}}/{{library_name}}.rc
 {{/is_cross_platform}}
     man/Makefile
     tools/Makefile

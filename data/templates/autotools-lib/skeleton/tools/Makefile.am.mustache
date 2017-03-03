@@ -6,11 +6,11 @@ bin_PROGRAMS = {{tool_name}}
 	main.c
 
 {{tool_lower}}_LDADD = \
-	$(top_builddir)/{{project_normalized}}/{{library_name}}-@{{api_upper}}_API_VERSION@.la \
+	$(top_builddir)/{{library_name}}/{{library_name}}-@{{api_upper}}_API_VERSION@.la \
 	$({{api_upper}}_LIBS)
 
 AM_CPPFLAGS = \
-	-I$(top_srcdir)/{{project_normalized}} \
+	-I$(top_srcdir)/{{library_name}} \
 	-I$(top_builddir) \
 	$({{api_upper}}_CFLAGS)
 

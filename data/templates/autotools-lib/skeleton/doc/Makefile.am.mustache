@@ -3,10 +3,10 @@ AM_V_DOXYGEN_ = $(AM_V_DOXYGEN_$(AM_DEFAULT_VERBOSITY))
 AM_V_DOXYGEN_0 = @echo "  DOXYGEN    " $<;
 
 DOXINPUTS = \
-	$(top_srcdir)/{{project_normalized}}/{{api_name}}.h
+	$(top_srcdir)/{{library_name}}/{{api_name}}.h
 
 EXTRADIST = \
-	{{project_normalized}}.doxygen.in
+	{{library_name}}.doxygen.in
 
 CLEANFILES = doxygen-build.stamp
 
@@ -18,7 +18,7 @@ all-local:
 install-data-local:
 endif
 
-doxygen-build.stamp: {{project_normalized}}.doxygen $(DOXINPUTS)
+doxygen-build.stamp: {{library_name}}.doxygen $(DOXINPUTS)
 	$(AM_V_DOXYGEN)$(DOXYGEN) $< && touch $@
 
 install-html-local:
