@@ -1,6 +1,0 @@
-{
-	"name": "autotools-lib",
-	"description": "Shared library (using Autotools)",
-	"author": "Eric Le Bihan",
-	"is-library": true
-}
