@@ -9,18 +9,23 @@
 //
 
 #[macro_use]
+extern crate error_chain;
+#[macro_use]
 extern crate clap;
 
 #[macro_use]
 mod {{library_lower}};
+mod cli;
 
-use clap::{App};
-
-fn main() {
-    let matches = App::new("{{executable_name}}")
-        .version(env!("CARGO_PKG_VERSION"))
-        .about("{{description}}")
-        .author("{{author_name}} <{{author_email}}>")
-        .get_matches();
-    std::process::exit(0);
+error_chain! {
 }
+
+fn run() -> Result<()> {
+    let matches = cli::build_cli().get_matches();
+
+     // Insert code here
+
+     Ok(())
+}
+
+quick_main!(run);
