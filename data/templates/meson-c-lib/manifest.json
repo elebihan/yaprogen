@@ -1,0 +1,6 @@
+{
+	"name": "meson-c-lib",
+	"description": "C shared library (using Meson)",
+	"author": "Eric Le Bihan",
+	"is-library": true
+}

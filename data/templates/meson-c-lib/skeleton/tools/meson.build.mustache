@@ -1,0 +1,8 @@
+{{tool_lower}}_sources = 'main.c'
+
+executable('{{tool_name}}',
+           {{tool_lower}}_sources,
+           include_directories : includes,
+           link_with : [{{library_lower}}],
+           install : true,
+           install_dir : bindir)

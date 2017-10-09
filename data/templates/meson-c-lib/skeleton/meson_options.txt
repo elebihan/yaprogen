@@ -1,0 +1,10 @@
+# -*- mode: meson -*-
+
+option('api-docs', type : 'boolean', value : true,
+       description : '''build API documentation''')
+
+option('man-pages', type : 'boolean', value : true,
+       description : '''build MAN pages''')
+
+option('tools', type : 'boolean', value : true,
+      description : '''build additional tools''')
