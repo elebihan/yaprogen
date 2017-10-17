@@ -1,0 +1,6 @@
+{
+	"name": "autotools-glib-lib",
+	"description": "GLib/GObject shared library (using Autotools)",
+	"author": "Eric Le Bihan",
+	"is-library": true
+}
