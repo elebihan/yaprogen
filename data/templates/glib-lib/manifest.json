@@ -1,6 +1,0 @@
-{
-	"name": "glib-lib",
-	"description": "C shared library (based on GLib/GObject)",
-	"author": "Eric Le Bihan",
-	"is-library": true
-}
