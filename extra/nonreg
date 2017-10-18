@@ -9,6 +9,7 @@ TEMPLATES=$(ls data/templates | sed 's/common//g')
 PROJECTS=( libacme quux 'Frob Baz' )
 OUTDIR=/tmp/yaprogen-tmp
 DESTDIR=/tmp/yaprogen-res
+QMAKE=${QMAKE:-qmake}
 
 rm -rf $OUTDIR $DESTDIR
 
@@ -26,7 +27,7 @@ for project in "${PROJECTS[@]}"; do
                 ./autogen.sh --prefix="$prefix"
                 make install
             elif [ -f "$project.pro" ]; then
-                qmake PREFIX="$prefix"
+                ${QMAKE} PREFIX="$prefix"
                 make install
             fi
         )
