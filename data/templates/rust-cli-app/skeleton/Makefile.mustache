@@ -1,0 +1,61 @@
+-include config.mk
+-include common.mk
+
+EXEC := $(shell sed -n -e 's,name = "\(.\+\)",\1,gp' Cargo.toml)
+
+ifdef ENABLE_MANPAGES
+SUBDIRS += man
+endif
+
+all: check-config all-local
+	@for dir in $(SUBDIRS); do \
+		$(MAKE) -C $$dir all; \
+	done
+
+clean: clean-local
+	@for dir in $(SUBDIRS); do \
+		$(MAKE) -C $$dir clean; \
+	done
+
+install: install-local
+	@for dir in $(SUBDIRS); do \
+		$(MAKE) -C $$dir install; \
+	done
+
+check-config:
+	@if test ! -e config.mk; then \
+		echo "ERROR: config.mk is missing." >&2; \
+		echo "ERROR: run ./configure to create it." >&2; \
+		exit 1; \
+	fi
+
+ifdef ENABLE_DEBUG
+CARGO_TARGET_MODE = debug
+else
+CARGO_OPTS += --release
+CARGO_TARGET_MODE = release
+endif
+
+ifdef CARGO_TARGET_NAME
+CARGO_OPTS += --target=$(CARGO_TARGET_NAME)
+CARGO_TARGET_DIR = target/$(CARGO_TARGET_NAME)/$(CARGO_TARGET_MODE)
+else
+CARGO_TARGET_DIR = target/$(CARGO_TARGET_MODE)
+endif
+
+ifeq ($(V),0)
+CARGO_OPTS += --quiet
+endif
+
+all-local:
+	$(Q)$(CARGO) build $(CARGO_OPTS)
+
+clean-local:
+	$(Q)$(CARGO) clean
+
+install-local: all-local
+	install -d $(DESTDIR)$(bindir)
+	$(Q)install -m 0755 $(CARGO_TARGET_DIR)/$(EXEC) \
+		$(DESTDIR)$(bindir)/$(PROGRAM)
+
+.PHONY: all clean install check-config all-local clean-local install-local

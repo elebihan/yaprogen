@@ -1,7 +1,0 @@
-# Insert menu description here
-#
-# Example:
-#
-# menu "Baz"
-# source "$BR2_EXTERNAL/package/foo/Config.in"
-# endmenu

@@ -1,0 +1,216 @@
+#####################################################################
+# Versioning
+#####################################################################
+
+# {{api_lower}} package version number (as distinct as shared library version)
+# An odd micro number indicates in-progress development from vcs
+# An even micro number indicates a released version
+#
+# Making a point release:
+# - increase {{api_lower}}_micro_version to the next even number
+# - increase {{api_lower}}_interface_age to the next even number
+# After the release:
+# - increase {{api_lower}}_micro_version to the next odd number
+# - increase {{api_lower}}_interface_version to the next odd number
+m4_define([{{api_lower}}_major_version], [0])
+m4_define([{{api_lower}}_minor_version], [1])
+m4_define([{{api_lower}}_micro_version], [1])
+
+# For stable release, increase interface_age by 1
+# If the API changes (addition or deprecation), set it to 0
+# For development release, keep interface_age to 0
+m4_define([{{api_lower}}_interface_age],
+          [0])
+m4_define([{{api_lower}}_binary_age],
+          [m4_eval(100 * {{api_lower}}_minor_version + {{api_lower}}_micro_version)])
+
+m4_define([{{api_lower}}_release_status],
+          [m4_if(m4_eval({{api_lower}}_micro_version % 2),
+                         [1],
+                         [vcs],
+                         [m4_if(m4_eval({{api_lower}}_minor_version % 2),
+                                        [1],
+                                        [snapshot],
+                                        [release])])])
+m4_define([{{api_lower}}_version],
+          [{{api_lower}}_major_version.{{api_lower}}_minor_version.{{api_lower}}_micro_version])
+
+# Only change this when API breaks
+m4_define([{{api_lower}}_api_version],
+          [0.0])
+
+#####################################################################
+
+AC_PREREQ(2.59)
+AC_INIT([{{project_name}}],
+        [{{api_lower}}_version])
+AC_CONFIG_SRCDIR([{{project_normalized}}/{{api_name}}.h])
+AC_CONFIG_MACRO_DIR([m4])
+
+AM_INIT_AUTOMAKE([1.11 -Wall -Wno-portability tar-ustar dist-xz no-dist-gzip])
+AM_MAINTAINER_MODE([enable])
+AM_SILENT_RULES([yes])
+
+#####################################################################
+# Shared library versioning
+#####################################################################
+
+AC_SUBST([{{api_upper}}_MAJOR_VERSION],  [{{api_lower}}_major_version])
+AC_SUBST([{{api_upper}}_MINOR_VERSION],  [{{api_lower}}_minor_version])
+AC_SUBST([{{api_upper}}_MICRO_VERSION],  [{{api_lower}}_micro_version])
+AC_SUBST([{{api_upper}}_VERSION],        [{{api_lower}}_version])
+AC_SUBST([{{api_upper}}_API_VERSION],    [{{api_lower}}_api_version])
+AC_SUBST([{{api_upper}}_API_VERSION_AM], [${{api_upper}}_MAJOR_VERSION\_0])
+AC_SUBST([{{api_upper}}_RELEASE_STATUS], [{{api_lower}}_release_status])
+
+m4_define([lt_current],
+          [m4_eval(100 * {{api_lower}}_minor_version + {{api_lower}}_micro_version - {{api_lower}}_interface_age)])
+m4_define([lt_revision], [{{api_lower}}_interface_age])
+m4_define([lt_age], [m4_eval({{api_lower}}_binary_age - {{api_lower}}_interface_age)])
+m4_define([lt_current_minus_age], [m4_eval(lt_current - lt_age)])
+
+{{api_upper}}_LT_CURRENT=lt_current
+{{api_upper}}_LT_REV=lt_revision
+{{api_upper}}_LT_AGE=lt_age
+{{api_upper}}_LT_CURRENT_MINUS_AGE=lt_current_minus_age
+{{api_upper}}_LT_VERSION="${{api_upper}}_LT_CURRENT:${{api_upper}}_LT_REV:${{api_upper}}_LT_AGE"
+{{api_upper}}_LT_LDFLAGS="-version-info ${{api_upper}}_LT_VERSION"
+AC_SUBST([{{api_upper}}_LT_CURRENT],           [lt_current])
+AC_SUBST([{{api_upper}}_LT_CURRENT_MINUS_AGE], [lt_current_minus_age])
+AC_SUBST([{{api_upper}}_LT_REVISION],          [lt_revision])
+AC_SUBST([{{api_upper}}_LT_VERSION],           [${{api_upper}}_LT_VERSION])
+
+{{#is_cross_platform}}
+#####################################################################
+# Platform checks
+#####################################################################
+
+AC_CANONICAL_HOST
+
+platform_win32=no
+
+AC_MSG_CHECKING([if building for MS Win32])
+AS_CASE([$host],
+        [*-*-mingw*|*-*-cygwin*],
+        [
+          {{api_upper}}_LT_LDFLAGS="${{api_upper}}_LT_LDFLAGS -no-undefined"
+          platform_win32=yes
+        ],
+
+        []
+)
+AC_MSG_RESULT([$platform_win32])
+
+AM_CONDITIONAL(PLATFORM_WIN32, [test "x$platform_win32" = "xyes"])
+
+AS_IF([test "x$platform_win32" = "xyes"],
+      [AC_CHECK_TOOL([WINDRES],
+                     [windres],
+                     [AC_MSG_ERROR([could not find windres])])]
+)
+
+{{/is_cross_platform}}
+
+AC_SUBST([{{api_upper}}_LT_LDFLAGS])
+
+#####################################################################
+# Program checks
+#####################################################################
+
+AC_PROG_CC
+AC_PROG_LIBTOOL
+AC_PATH_PROG([DOXYGEN], [doxygen], [no])
+AC_PATH_PROG([XSLTPROC], [xsltproc], [no])
+
+#####################################################################
+# --with-
+#####################################################################
+
+# Insert calls to AC_ARG_WITH here
+
+#####################################################################
+# --enable-
+#####################################################################
+
+AC_ARG_ENABLE([api-docs],
+              [AS_HELP_STRING([--disable-api-docs],
+                              [disable API documentation generation @<:@default=enabled@:>@])],
+              [enable_api_docs="$enableval"],
+              [enable_api_docs="yes"])
+
+AS_IF([test "x$enable_api_docs" != "xno"],
+      AS_IF([test "x$DOXYGEN" = "xno"],
+            [AC_MSG_ERROR([API documentation enabled but doxygen not found])])
+)
+
+AM_CONDITIONAL([BUILD_API_DOCS], [test "x$enable_api_docs" != "xno"])
+
+AC_ARG_ENABLE([manpages],
+              [AS_HELP_STRING([--disable-manpages],
+                              [disable MAN pages generation @<:@default=enabled@:>@])],
+              [enable_manpages="$enableval"],
+              [enable_manpages="yes"])
+
+AS_IF([test "x$enable_manpages" != "xno"],
+      AS_IF([test "x$XSLTPROC" = "xno"],
+            [AC_MSG_ERROR([MAN pages generation enabled but xsltproc not found])])
+)
+
+AM_CONDITIONAL([BUILD_MANPAGES], [test "x$enable_manpages" != "xno"])
+
+AC_ARG_ENABLE([tools],
+              [AS_HELP_STRING([--disable-tools],
+                              [disable building tools @<:@default=enabled@:>@])],
+              [enable_tools="$enableval"],
+              [enable_tools="yes"])
+
+AM_CONDITIONAL([BUILD_TOOLS], [test "x$enable_tools" != "xno"])
+
+#####################################################################
+# Packages checks
+#####################################################################
+
+# Insert calls to PKG_CHECK_MODULES here
+
+#####################################################################
+# Function and structure checks
+#####################################################################
+
+# Insert calls to AC_CHECK_{FUNC,HEADER} here
+
+#####################################################################
+# Generate files from *.in
+#####################################################################
+
+AC_CONFIG_HEADERS([config.h])
+AC_CONFIG_FILES([
+    Makefile
+    doc/Makefile
+    doc/{{project_normalized}}.doxygen
+    {{project_normalized}}/Makefile
+    {{project_normalized}}/{{project_normalized}}.pc
+{{#is_cross_platform}}
+    {{project_normalized}}/{{project_normalized}}.rc
+{{/is_cross_platform}}
+    man/Makefile
+    tools/Makefile
+])
+
+#####################################################################
+{{=!! !!=}}
+
+AC_OUTPUT
+AC_MSG_RESULT([
+    === $PACKAGE $VERSION (${!!api_upper!!_RELEASE_STATUS}) ===
+
+    prefix:             ${prefix}
+    sysconfdir:         ${sysconfdir}
+    libdir:             ${libdir}
+    rootlibdir:         ${rootlibdir}
+    includedir:         ${includedir}
+    bindir:             ${bindir}
+
+    doc:                ${enable_api_docs}
+    man:                ${enable_manpages}
+    tools:              ${enable_tools}
+])

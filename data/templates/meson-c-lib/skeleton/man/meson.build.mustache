@@ -1,0 +1,12 @@
+custom_target('{{tool_name}}.1',
+              output : '{{tool_name}}.1',
+              input : '{{tool_name}}.xml',
+              command : [xsltproc,
+                         '--output', '@OUTPUT@',
+                         '--nonet',
+                         '--stringparam', 'man.output.quietly', '1',
+                         '--param', 'funcsynopsis.style', 'ansi',
+                         'http://docbook.sourceforge.net/release/xsl/current/manpages/docbook.xsl',
+                         '@INPUT@'],
+              install : true,
+              install_dir : join_paths(get_option('mandir'), 'man1'))

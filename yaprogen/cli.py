@@ -2,7 +2,7 @@
 #
 # This file is part of Yaprogen
 #
-# Copyright (C) 2014 Eric Le Bihan <eric.le.bihan.dev@free.fr>
+# Copyright (C) 2014-2017 Eric Le Bihan <eric.le.bihan.dev@free.fr>
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -32,12 +32,16 @@ setup_i18n()
 
 
 def parse_cmd_list(args):
-    for template in list_available_templates():
-        if args.with_details:
-            text = "{0.name:<24} -- {0.description:<48} -- {0.path}"
-        else:
-            text = "{0.name:<24} -- {0.description:<48}"
-        print(text.format(template))
+    if args.kind == 'templates':
+        for template in list_available_templates():
+            if args.with_details:
+                text = "{0.name:<24} -- {0.description:<48} -- {0.path}"
+            else:
+                text = "{0.name:<24} -- {0.description:<48}"
+            print(text.format(template))
+    elif args.kind == 'licenses':
+        for license in list_available_licenses():
+            print(license)
 
 
 def parse_cmd_create(args):
@@ -57,6 +61,7 @@ def parse_cmd_create(args):
     gen.company = args.company or config.company_name
     gen.email = args.email or config.author_email
     gen.description = args.description
+    gen.homepage = args.homepage
     gen.copyright_holder = args.copyright_holder
     gen.license = args.license or config.preferred_license
     gen.enable_cross_platform = args.cross_platform
@@ -71,6 +76,11 @@ def main():
     subparsers = parser.add_subparsers(dest='command')
     p = subparsers.add_parser('list',
                               help=_('list available templates'))
+    p.add_argument('kind',
+                   nargs='?',
+                   choices=('licenses', 'templates'),
+                   default='templates',
+                   help=_('kind of objects to list'))
     p.add_argument('-d', '--details',
                    dest='with_details',
                    action='store_true',
@@ -95,6 +105,9 @@ def main():
     p.add_argument('-e', '--email',
                    metavar=_('ADDRESS'),
                    help=_('set email address of the author'))
+    p.add_argument('-H', '--homepage',
+                   metavar=_('URL'),
+                   help=_('set URL of project homepage'))
     p.add_argument('-l', '--license',
                    metavar=_('LICENSE'),
                    choices=list_available_licenses(),

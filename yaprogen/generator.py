@@ -2,7 +2,7 @@
 #
 # This file is part of Yaprogen
 #
-# Copyright (C) 2014 Eric Le Bihan <eric.le.bihan.dev@free.fr>
+# Copyright (C) 2014-2017 Eric Le Bihan <eric.le.bihan.dev@free.fr>
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -24,7 +24,7 @@
 
    Implement the template generator
 
-   :copyright: (C) 2014 Eric Le Bihan
+   :copyright: (C) 2014-2017 Eric Le Bihan
    :license: GPLv3+
 """
 
@@ -80,6 +80,7 @@ class Generator(object):
         self.copyright_holder = None
         self.email = None
         self.company = None
+        self.homepage = None
         self.quiet = False
         self.enable_cross_platform = False
         self._values = {}
@@ -132,6 +133,7 @@ class Generator(object):
                 notice_lines.append({'line': line})
 
         description = self.description or _("Insert description here")
+        homepage = self.homepage or "https://some/where"
 
         self._values = {
             'description': description,
@@ -140,11 +142,14 @@ class Generator(object):
             'copyright_notice': copyright_notice,
             'copyright_holder': self.copyright_holder,
             'year': datetime.now().year,
+            'month': datetime.now().strftime("%B"),
+            'day': datetime.now().day,
             'author_name': self.author,
             'author_firstname': firstname,
             'author_surname': surname,
             'author_email': self.email,
             'company_name': self.company,
+            'homepage': self.homepage,
             'project_name': self._name,
             'project_normalized': normalize(self._name),
             'project_lower': lower(self._name),
@@ -185,18 +190,18 @@ class Generator(object):
         path = os.path.join(self._template.path, 'skeleton')
 
         subs = {
-            'foo-api': 'api_name',
-            'foo_api': 'api_lower',
-            'FOO_API': 'api_upper',
-            'FooApi': 'api_camel',
-            'foo-exec': 'executable_name',
-            'foo_exec': 'executable_lower',
-            'FOO_EXEC': 'executable_upper',
-            'FooExec': 'executable_camel',
-            'foo-lib': 'library_name',
-            'foo_lib': 'library_lower',
-            'FOO_LIB': 'library_upper',
-            'FooLib': 'library_camel',
+            'xyz-api': 'api_name',
+            'xyz_api': 'api_lower',
+            'XYZ_API': 'api_upper',
+            'XyzApi': 'api_camel',
+            'xyz-exec': 'executable_name',
+            'xyz_exec': 'executable_lower',
+            'XYZ_EXEC': 'executable_upper',
+            'XyzExec': 'executable_camel',
+            'xyz-lib': 'library_name',
+            'xyz_lib': 'library_lower',
+            'XYZ_LIB': 'library_upper',
+            'XyzLib': 'library_camel',
         }
 
         for filename in self._template.files:
@@ -204,7 +209,7 @@ class Generator(object):
             if target.endswith('.mustache'):
                 for k, v in subs.items():
                     target = target.replace(k, self._values[v])
-                target = target.replace('foo',
+                target = target.replace('xyz',
                                         self._values['project_normalized'])
                 target = target.replace('.mustache', '')
                 self._convert_file(filename, target)

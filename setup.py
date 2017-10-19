@@ -3,7 +3,7 @@
 #
 # This file is part of Yaprogen
 #
-# Copyright (C) 2014 Eric Le Bihan <eric.le.bihan.dev@free.fr>
+# Copyright (C) 2014-2017 Eric Le Bihan <eric.le.bihan.dev@free.fr>
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by

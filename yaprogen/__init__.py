@@ -1,7 +1,7 @@
 #
 # This file is part of Yaprogen
 #
-# Copyright (C) 2014 Eric Le Bihan <eric.le.bihan.dev@free.fr>
+# Copyright (C) 2014-2017 Eric Le Bihan <eric.le.bihan.dev@free.fr>
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -24,11 +24,11 @@
    Yaprogen (Yet Another Project Generator) generates the skeleton of a
    project (program, library, ...) using predefined templates.
 
-   :copyright: (C) 2014 Eric Le Bihan
+   :copyright: (C) 2014-2017 Eric Le Bihan
    :license: GPLv3+
 """
 
 __docformat__ = 'restructuredtext en'
-__version__ = '0.2.0'
+__version__ = '0.4.0'
 
 # vim: ts=4 sw=4 sts=4 et ai

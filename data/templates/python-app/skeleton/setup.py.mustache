@@ -11,10 +11,7 @@
 
 from setuptools import setup, find_packages
 from disthelpers import extract_messages, init_catalog, update_catalog
-from disthelpers import build, build_catalog, build_man
-import glob
-import fnmatch
-import os
+from disthelpers import build, build_catalog, build_man, build_html
 import {{library_lower}}
 
 setup(name='{{project_normalized}}',
@@ -23,23 +20,30 @@ setup(name='{{project_normalized}}',
       long_description='''
       Here a longer description here
       ''',
-      license='GPLv3',
-      url='https://some.url/',
+      license='{{license_alias}}',
+      url='{{homepage}}',
       platforms=['Any'],
       keywords=[],
-      install_requires=[],
+      install_requires=[
+          'colorama>=0.3',
+      ],
       classifiers=[
           'Development Status :: 3 - Alpha',
           'Programming Language :: Python :: 3',
       ],
       packages=find_packages(),
-      scripts=['scripts/{{executable_name}}'],
       data_files=[],
       include_package_data=True,
+      entry_points={
+          'console_scripts': [
+              '{{executable_name}} = {{library_lower}}.cli:main',
+          ],
+       },
       author='{{author_name}}',
       author_email='{{author_email}}',
       cmdclass={'build': build,
                 'build_man': build_man,
+                'build_html': build_html,
                 'extract_messages': extract_messages,
                 'init_catalog': init_catalog,
                 'update_catalog': update_catalog,

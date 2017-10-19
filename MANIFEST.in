@@ -5,6 +5,8 @@ include HACKING.rst
 include README.rst
 include disthelpers.py
 include extra/nonreg
+include po/LINGUAS
+include po/POTFILES.in
 recursive-include data *
 recursive-include extra *
 recursive-include man *

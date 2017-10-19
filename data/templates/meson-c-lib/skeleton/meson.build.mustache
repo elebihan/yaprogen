@@ -1,0 +1,78 @@
+project('{{project_name}}', 'c',
+        version : '0.1.1',
+        license : '{{license}}',
+        default_options : [
+          'c_std=c99',
+          'prefix=/usr',
+          'sysconfdir=/etc',
+        ],
+        meson_version : '>= 0.43')
+
+{{api_lower}}_version = meson.project_version()
+ver_arr = {{api_lower}}_version.split('.')
+
+{{api_lower}}_major_version = ver_arr[0].to_int()
+{{api_lower}}_minor_version = ver_arr[1].to_int()
+{{api_lower}}_micro_version = ver_arr[2].to_int()
+
+apiversion = '0.0'
+soversion = 0
+libversion = '@0@.@1@.0'.format(soversion,
+                                {{api_lower}}_minor_version * 100 +
+                                {{api_lower}}_micro_version)
+
+prefixdir = get_option('prefix')
+bindir = join_paths(prefixdir, get_option('bindir'))
+libdir = join_paths(prefixdir, get_option('libdir'))
+sysconfdir = join_paths(prefixdir, get_option('sysconfdir'))
+includedir = join_paths(prefixdir, get_option('includedir'))
+datadir = join_paths(prefixdir, get_option('datadir'))
+
+conf = configuration_data()
+conf.set_quoted('PACKAGE_STRING', meson.project_name() + ' ' +
+                                  meson.project_version())
+conf.set_quoted('PACKAGE_VERSION', meson.project_version())
+
+config_h = configure_file(output : 'config.h',
+                          configuration : conf)
+
+includes = include_directories('{{project_normalized}}')
+
+subdir('{{project_normalized}}')
+
+enable_api_docs = get_option('api-docs')
+if enable_api_docs
+  doxygen = find_program('doxygen', required : true)
+  if doxygen.found()
+    subdir('doc')
+  endif
+endif
+
+enable_man_pages = get_option('man-pages')
+if enable_man_pages
+  xsltproc = find_program('xsltproc', required : true)
+  if xsltproc.found()
+    subdir('man')
+  endif
+endif
+
+enable_tools = get_option('tools')
+if enable_tools
+  subdir('tools')
+endif
+
+status = [
+  '@0@ @1@'.format(meson.project_name(), meson.project_version()),
+
+  'prefix:         @0@'.format(prefixdir),
+  'sysconfdir:     @0@'.format(sysconfdir),
+  'libdir:         @0@'.format(libdir),
+  'includedir:     @0@'.format(includedir),
+  'bindir:         @0@'.format(bindir),
+  '',
+  'doc:            @0@'.format(enable_api_docs),
+  'man:            @0@'.format(enable_man_pages),
+  'tools:          @0@'.format(enable_tools),
+]
+
+message('\n         '.join(status))

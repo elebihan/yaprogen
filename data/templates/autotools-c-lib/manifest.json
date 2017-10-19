@@ -1,0 +1,6 @@
+{
+	"name": "autotools-c-lib",
+	"description": "C shared library (using Autotools)",
+	"author": "Eric Le Bihan",
+	"is-library": true
+}

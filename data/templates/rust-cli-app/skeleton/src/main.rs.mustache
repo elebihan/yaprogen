@@ -1,0 +1,31 @@
+//
+// This file is part of {{project_name}}
+//
+// {{copyright_notice}}
+//
+{{#license_notice}}
+// {{line}}
+{{/license_notice}}
+//
+
+#[macro_use]
+extern crate error_chain;
+#[macro_use]
+extern crate clap;
+
+#[macro_use]
+mod {{library_lower}};
+mod cli;
+
+error_chain! {
+}
+
+fn run() -> Result<()> {
+    let matches = cli::build_cli().get_matches();
+
+     // Insert code here
+
+     Ok(())
+}
+
+quick_main!(run);

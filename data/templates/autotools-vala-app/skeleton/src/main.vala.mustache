@@ -1,0 +1,50 @@
+/*
+ * This file is part of {{project_name}}
+ *
+ * {{copyright_notice}}
+ *
+{{#license_notice}}
+ * {{line}}
+{{/license_notice}}
+ */
+
+using Config;
+using Posix;
+
+private static bool show_version;
+
+private const OptionEntry[] entries = {
+    { "version", 0, 0, OptionArg.NONE, ref show_version,
+      N_("Show the version of the program"), null },
+    { null },
+};
+
+private void init_i18n() {
+    Intl.bindtextdomain(Config.GETTEXT_PACKAGE, Config.LOCALE_DIR);
+    Intl.bind_textdomain_codeset(Config.GETTEXT_PACKAGE, "UTF-8");
+    Intl.textdomain(Config.GETTEXT_PACKAGE);
+}
+
+int main(string[] args) {
+
+    init_i18n();
+
+    var context = new OptionContext(null);
+    context.add_main_entries(entries, null);
+
+    try {
+        context.parse(ref args);
+    } catch (OptionError error) {
+        GLib.stderr.printf("%s\n", error.message);
+        exit(1);
+    }
+
+    if (show_version) {
+        GLib.stdout.printf("%s\n", Config.PACKAGE_VERSION);
+        exit(0);
+    }
+
+    /* Insert your code here */
+
+    return 0;
+}
