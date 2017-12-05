@@ -155,7 +155,7 @@ class Generator(object):
             'author_surname': surname,
             'author_email': self.email,
             'company_name': self.company,
-            'homepage': self.homepage,
+            'homepage': homepage,
             'project_name': self._name,
             'project_normalized': normalize(self._name),
             'project_lower': lower(self._name),
