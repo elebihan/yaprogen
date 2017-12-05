@@ -30,6 +30,7 @@ from docutils.core import publish_file
 import os
 import subprocess
 
+
 class extract_messages(cmd.Command):
     description = 'extract localizable strings from source code'
     user_options = []
@@ -49,6 +50,7 @@ class extract_messages(cmd.Command):
             '--package-name', self.distribution.get_name(),
         ]
         subprocess.check_call(args)
+
 
 class init_catalog(cmd.Command):
     description = 'create a new catalog based on a POT file'
@@ -73,6 +75,7 @@ class init_catalog(cmd.Command):
         ]
         subprocess.check_call(args)
 
+
 class update_catalog(cmd.Command):
     description = 'update an existing catalog from a POT file'
     user_options = [
@@ -92,6 +95,7 @@ class update_catalog(cmd.Command):
         po_file = os.path.join(os.curdir, 'po', self.locale + '.po')
         args = ['msgmerge', '--update', po_file, pot_file]
         subprocess.check_call(args)
+
 
 class build_catalog(cmd.Command):
     description = 'compile *.po file into *.mo file'
@@ -130,6 +134,7 @@ class build_catalog(cmd.Command):
             subprocess.check_call(args)
             locale_dir = os.path.join('share', 'locale', locale, 'LC_MESSAGES')
             self.distribution.data_files.append((locale_dir, [dst]))
+
 
 class build_man(cmd.Command):
     description = 'build MAN page from restructuredtext'
@@ -179,7 +184,8 @@ class build_html(cmd.Command):
                     if not os.path.exists(dst_dir):
                         os.makedirs(dst_dir)
                     src = os.path.join(path, f)
-                    dst = os.path.join(dst_dir, filename + '.' + section + '.html')
+                    dst = os.path.join(dst_dir, filename + '.' + section +
+                                       '.html')
                     print("converting {0}".format(src))
                     publish_file(source_path=src,
                                  destination_path=dst,

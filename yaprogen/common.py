@@ -31,6 +31,7 @@ import configparser
 import os
 from gettext import bindtextdomain, textdomain
 
+
 def get_data_dir():
     """Returns the data directory.
 
@@ -47,12 +48,14 @@ def get_data_dir():
 
     return os.path.normpath(data_dir)
 
+
 def get_default_notices_dir():
     """Returns the path to the default license notices directory.
 
     rtype: str
     """
     return os.path.join(get_data_dir(), 'notices')
+
 
 def list_available_licenses():
     """Returns a list of the available licenses.
@@ -70,6 +73,7 @@ def list_available_licenses():
                 if ext == '.txt':
                     licenses.append(root)
     return set(sorted(licenses))
+
 
 class Configuration:
     """Stores the configuration of the application."""
@@ -93,6 +97,7 @@ class Configuration:
         self.preferred_license = parser.get('Creation', 'PreferredLicense',
                                             fallback='GPLv2+')
 
+
 def load_configuration():
     """Load configuration from the user configuration file.
 
@@ -104,6 +109,7 @@ def load_configuration():
     if os.path.exists(filename):
         config.load_from_file(filename)
     return config
+
 
 def setup_i18n():
     """Set up internationalization."""

@@ -36,6 +36,7 @@ from gettext import gettext as _
 from datetime import datetime
 from .licensing import get_license_notice_text
 
+
 def split(string):
     crumbs = []
     for chunk in re.split('\W+', string):
@@ -46,21 +47,26 @@ def split(string):
             crumbs.append(chunk)
     return crumbs
 
+
 def normalize(string):
     fields = split(string)
     return '-'.join(map(lambda x: x.lower(), fields))
+
 
 def lower(string):
     fields = split(string)
     return '_'.join(map(lambda x: x.lower(), fields))
 
+
 def upper(string):
     fields = split(string)
     return '_'.join(map(lambda x: x.upper(), fields))
 
+
 def camelize(string):
     fields = split(string)
     return ''.join(map(lambda x: x.capitalize(), fields))
+
 
 class Generator(object):
     """Generates a project using a template.

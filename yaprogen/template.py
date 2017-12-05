@@ -33,9 +33,11 @@ from fnmatch import fnmatch
 from .common import get_data_dir
 from gettext import gettext as _
 
+
 def get_default_templates_dir():
     """Returns the path to the default templates directory"""
     return os.path.join(get_data_dir(), 'templates')
+
 
 def list_templates(directory):
     """List the templates available in a directory.
@@ -56,6 +58,7 @@ def list_templates(directory):
                 templates.append(Template(entry))
     return templates
 
+
 def list_available_templates():
     """Returns a list of the available templates.
 
@@ -75,6 +78,7 @@ def list_available_templates():
                     names.append(template.name)
     return sorted(templates, key=lambda x: x.name)
 
+
 def lookup_template_by_name(name):
     """Search for a template by its name.
 
@@ -88,6 +92,7 @@ def lookup_template_by_name(name):
         if entry.name == name:
             return entry
     raise RuntimeError(_('template not found'))
+
 
 class Template(object):
     """Represents the template of a project.
