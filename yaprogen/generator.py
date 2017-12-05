@@ -89,6 +89,7 @@ class Generator(object):
         self.homepage = None
         self.quiet = False
         self.enable_cross_platform = False
+        self.use_spdx = False
         self._values = {}
         self.overrides = {}
 
@@ -134,9 +135,13 @@ class Generator(object):
 
         notice_lines = []
         if self.license:
-            text = get_license_notice_text(self.license)
-            for line in text.split('\n'):
+            if self.use_spdx:
+                line = "SPDX-License-Identifier: {0}".format(self.license)
                 notice_lines.append({'line': line})
+            else:
+                text = get_license_notice_text(self.license)
+                for line in text.split('\n'):
+                    notice_lines.append({'line': line})
 
         description = self.description or _("Insert description here")
         homepage = self.homepage or "https://some/where"
