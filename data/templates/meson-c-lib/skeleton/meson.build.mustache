@@ -44,7 +44,7 @@ endforeach
 config_h = configure_file(output : 'config.h',
                           configuration : conf)
 
-includes = include_directories('{{project_normalized}}')
+includes = include_directories('.', '{{project_normalized}}')
 
 subdir('{{project_normalized}}')
 
