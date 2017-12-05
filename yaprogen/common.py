@@ -95,7 +95,7 @@ class Configuration:
         self.author_email = parser.get('Creation', 'AuthorEmail')
         self.company_name = parser.get('Creation', 'CompanyName')
         self.preferred_license = parser.get('Creation', 'PreferredLicense',
-                                            fallback='GPLv2+')
+                                            fallback='GPL-2.0+')
 
 
 def load_configuration():
