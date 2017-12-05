@@ -65,6 +65,7 @@ def parse_cmd_create(args):
     gen.copyright_holder = args.copyright_holder
     gen.license = args.license or config.preferred_license
     gen.enable_cross_platform = args.cross_platform
+    gen.use_spdx = args.spdx
     gen.generate(args.output)
 
 
@@ -124,6 +125,10 @@ def main():
                    action='store_true',
                    default=False,
                    help=_('be quiet'))
+    p.add_argument('-s', '--spdx',
+                   action='store_true',
+                   default=False,
+                   help=_('use SPDX identifier instead of license text'))
     p.add_argument('-O', '--override',
                    action='append',
                    dest='overrides',
