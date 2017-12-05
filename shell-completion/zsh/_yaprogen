@@ -30,6 +30,7 @@ _yaprogen_list_all_templates()
         '(-o --output)'{-o,--output}'[set output directory]:dir:_directories' \
         '(-p --cross-platform)'{-p,--cross-platform}'[enable cross-platform support in template]' \
         '(-q --quiet)'{-q,--quiet}'[be quiet]' \
+        '(-s --spdx)'{-s,--spdx}'[use SPDX identifier instead of license text]' \
         '(-O --override)'{-O,--override}'[override value of variable K with V]:kv' \
         '1: :->template' \
         '2: :_guard "^-*" project'
