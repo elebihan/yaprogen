@@ -16,8 +16,8 @@ rm -rf $OUTDIR $DESTDIR
 for project in "${PROJECTS[@]}"; do
     for template in $TEMPLATES; do
         echo "** Generating $project using $template **"
-        prefix=$(echo $DESTDIR/$template/$project | sed 's/ /-/g')
-        workdir=$(echo $OUTDIR/$template/$project | sed 's/ /-/g')
+        prefix=$(sed 's/ /-/g' <<< "$DESTDIR/$template/$project")
+        workdir=$(sed 's/ /-/g' <<< "$OUTDIR/$template/$project")
         yaprogen create -o "$workdir" "$template" "$project"
         (cd "$workdir";
             if [ -f CMakeLists.txt ]; then
