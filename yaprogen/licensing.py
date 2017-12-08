@@ -70,7 +70,7 @@ def get_license_notice_text(license):
     """
     notices = _list_available_license_notices()
     if license not in notices:
-        raise KeyError(_("Unknown license"))
+        raise ValueError(_("{} is not a supported license").format(license))
     with open(notices[license]) as f:
         return f.read()
 
