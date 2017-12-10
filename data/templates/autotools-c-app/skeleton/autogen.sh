@@ -1,1 +1,1 @@
-../../common/skeleton/autogen.sh
+../../common-autotools/skeleton/autogen.sh

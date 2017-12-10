@@ -5,7 +5,7 @@
 
 set -e
 
-TEMPLATES=$(ls data/templates | sed 's/common//g')
+TEMPLATES=$(ls data/templates | sed 's/common.*//g')
 PROJECTS=( libacme quux 'Frob Baz' )
 OUTDIR=/tmp/yaprogen-tmp
 DESTDIR=/tmp/yaprogen-res
