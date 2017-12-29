@@ -15,5 +15,10 @@ pub fn build_cli() -> App<'static, 'static> {
         .version(crate_version!())
         .about(crate_description!())
         .author(crate_authors!())
+        .arg(Arg::with_name("v")
+             .short("v")
+             .long("verbose")
+             .multiple(true)
+             .help("Sets level of verbosity"))
         // Insert arguments here
 }
