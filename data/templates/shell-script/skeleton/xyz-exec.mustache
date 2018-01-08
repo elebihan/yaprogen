@@ -13,7 +13,7 @@ __VERSION__=0.1.1
 
 usage() {
     cat<<EOF
-Usage: $(basename $0) [OPTIONS]
+Usage: $(basename "$0") [OPTIONS]
 
 Options:
   -h        Show this help message
@@ -35,7 +35,7 @@ while getopts "hv" option; do
     esac
 done
 
-shift $(($OPTIND - 1))
+shift $((OPTIND - 1))
 
 # Insert your code here
 
