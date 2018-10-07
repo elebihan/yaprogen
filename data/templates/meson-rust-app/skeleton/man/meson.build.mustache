@@ -1,0 +1,21 @@
+#
+# {{project_name}} - {{description}}
+#
+# {{copyright_notice}}
+#
+{{#license_notice}}
+# {{line}}
+{{/license_notice}}
+#
+
+custom_target('{{tool_name}}.1',
+              output : '{{tool_name}}.1',
+              input : '{{tool_name}}.1.md',
+              command : [pandoc,
+                         '--output', '@OUTPUT@',
+                         '--standalone',
+                         '--from', 'markdown',
+                         '--to', 'man',
+                         '@INPUT@'],
+              install : true,
+              install_dir : join_paths(get_option('mandir'), 'man1'))

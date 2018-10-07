@@ -117,6 +117,8 @@ for prog in ${required_progs}; do
     if ! check_prog ${prog}; then
         echo "ERROR: '${prog}' is missing." >&2
         exit 1
+    else
+        echo "Found ${prog}"
     fi
 done
 

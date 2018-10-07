@@ -1,0 +1,5 @@
+{
+	"name": "meson-rust-app",
+	"description": "Rust command line application (using Meson)",
+	"author": "Eric Le Bihan"
+}

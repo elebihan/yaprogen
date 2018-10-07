@@ -1,0 +1,33 @@
+#!/bin/sh
+#
+# {{project_name}} - {{description}}
+#
+# {{copyright_notice}}
+#
+{{#license_notice}}
+# {{line}}
+{{/license_notice}}
+#
+
+set -e
+
+NAME=$1
+DESTDIR=${MESON_BUILD_ROOT}
+DIST=${DESTDIR}/dist/${NAME}
+
+cd "${MESON_SOURCE_ROOT}"
+mkdir -p "${DIST}"
+
+cp AUTHORS "${DIST}"
+cp README.md "${DIST}"
+cp Cargo.toml "${DIST}"
+cp Cargo.lock "${DIST}"
+cp meson.build "${DIST}"
+cp meson_options.txt "${DIST}"
+
+cp -rf man "${DIST}"
+cp -rf scripts "${DIST}"
+cp -rf src "${DIST}"
+
+cd "${DESTDIR}/dist"
+tar -cJf ${NAME}.tar.xz ${NAME}
