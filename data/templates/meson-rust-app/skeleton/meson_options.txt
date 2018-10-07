@@ -1,0 +1,7 @@
+# -*- mode: meson -*-
+
+option('man-pages', type : 'boolean', value : true,
+       description : '''build MAN pages''')
+
+option('debug', type : 'boolean', value : true,
+      description : '''build with debugging''')
