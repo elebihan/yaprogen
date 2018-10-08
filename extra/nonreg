@@ -7,8 +7,8 @@ set -e
 
 TEMPLATES=$(ls data/templates | sed 's/\(buildroot\|common\).*//g')
 PROJECTS=( libacme quux 'Frob Baz' )
-OUTDIR=/tmp/yaprogen-tmp
-DESTDIR=/tmp/yaprogen-res
+OUTDIR=/tmp/yaprogen-nonreg/projects
+DESTDIR=/tmp/yaprogen-nonreg/results
 QMAKE=${QMAKE:-qmake}
 
 rm -rf $OUTDIR $DESTDIR
