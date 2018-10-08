@@ -1,0 +1,20 @@
+#!/bin/sh
+#
+# {{project_name}} - {{description}}
+#
+# {{copyright_notice}}
+#
+{{#license_notice}}
+# {{line}}
+{{/license_notice}}
+#
+
+export CARGO_HOME=$1/target/cargo-home
+
+CARGO_OPTS="--manifest-path $1/Cargo.toml"
+
+if [ "$3" = "release" ]; then
+    CARGO_OPTS="${CARGO_OPTS} --release"
+fi
+
+cargo build ${CARGO_OPTS} && cp $1/target/$3/{{executable_name}} $2

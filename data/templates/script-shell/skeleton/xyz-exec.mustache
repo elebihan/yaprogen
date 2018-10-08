@@ -1,0 +1,42 @@
+#!/bin/sh
+#
+# {{project_name}} - {{description}}
+#
+# {{copyright_notice}}
+#
+{{#license_notice}}
+# {{line}}
+{{/license_notice}}
+#
+
+__VERSION__=0.1.1
+
+usage() {
+    cat<<EOF
+Usage: $(basename "$0") [OPTIONS]
+
+Options:
+  -h        Show this help message
+  -v        Show version information
+EOF
+}
+
+while getopts "hv" option; do
+    case ${option} in
+        h)
+            usage; exit 0
+            ;;
+        v)
+            echo ${__VERSION__}; exit 0
+            ;;
+        *)
+            echo "Unknown option" >&2; exit 1
+            ;;
+    esac
+done
+
+shift $((OPTIND - 1))
+
+# Insert your code here
+
+# vim: ts=4 sts=4 sw=4 et ai

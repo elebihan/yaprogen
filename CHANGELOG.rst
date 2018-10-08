@@ -1,6 +1,24 @@
 Changelog
 =========
 
+[0.6.0] - 2018-10-08
+--------------------
+
+Added
+~~~~~
+
+- cli: add --spdx command line option
+- make-rust-app: new template
+- meson-rust-app: new template
+
+Changed
+~~~~~~~
+
+- cmake-c-lib: add MAN page generation
+- data: notices: use SPDX identifiers
+- refactor common files in templates
+- change some template names
+
 [0.4.0] - 2017-10-19
 --------------------
 

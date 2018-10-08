@@ -1,0 +1,154 @@
+#!/bin/sh
+
+enable_manpages=yes
+
+usage() {
+    cat <<EOF
+Usage: ./configure [OPTION]...
+
+Defaults for the options are specified in brackets.
+
+Configuration:
+  -h, --help              display this help and exit
+
+Installation directories:
+  --prefix=PREFIX         install architecture-independent files in PREFIX
+                          [/usr/local]
+  --exec-prefix=EPREFIX   install architecture-dependent files in EPREFIX
+                          [PREFIX]
+
+Fine tuning of the installation directories:
+  --bindir=DIR            user executables [PREFIX/bin]
+  --sbindir=DIR           system admin executables [PREFIX/sbin]
+  --libexecdir=DIR        program executables [EPREFIX/libexec]
+  --sysconfdir=DIR        read-only single-machine data [PREFIX/etc]
+  --localstatedir=DIR     modifiable single-machine data [PREFIX/var]
+  --datadir=DIR           read-only arch.-independent data root [PREFIX/share]
+
+Optional Features:
+  --enable-debug          enable extra debugging
+  --disable-manpages      disable build of MAN pages
+
+System types:
+  --build=BUILD           configure for building on BUILD [guessed]
+  --host=HOST             cross-compile to build programs to run on HOST [BUILD]
+EOF
+}
+
+for opt; do
+    optarg=$(expr "$opt" : '[^=]*=\(.*\)')
+    case "$opt" in
+        --help) usage ;;
+        --prefix=*) prefix=$optarg;;
+        --exec-prefix=*) eprefix=$optarg;;
+        --bindir=*) bindir=$optarg;;
+        --sbindir=*) sbindir=$optarg;;
+        --libexec=*) libexec=$optarg;;
+        --sysconfdir=*) sysconfdir=$optarg;;
+        --localstatedir=*) localstatedir=$optarg;;
+        --datadir=*) datadir=$optarg;;
+        --build=*) build=$optarg;;
+        --host=*) host=$optarg;;
+        --target=*) target=$optarg;;
+        --enable-debug) enable_debug=yes;;
+        --disable-manpages) enable_manpages=;;
+        -* ) echo "$0: unknown option $arg";;
+    esac
+done
+
+: ${prefix:=/usr/local}
+: ${eprefix:=${prefix}}
+: ${bindir:=${prefix}/bin}
+: ${sbindir:=${prefix}/sbin}
+: ${libexecdir:=${eprefix}/libexec}
+: ${sysconfdir:=${prefix}/etc}
+: ${localstatedir:=${prefix}/var}
+: ${datadir:=${prefix}/share}
+
+: ${cargo=${CARGO-cargo}}
+: ${pandoc=${PANDOC-pandoc}}
+
+if [ -z "${build}" ]; then
+    build=$(uname -m)-unknown-$(uname -s | tr '[:upper:]' '[:lower:]')
+fi
+
+if [ -z "${host}" ]; then
+    [ -z "${target}" ] && target=${build}
+    host=${target}
+fi
+
+if [ -z "${target}" ]; then
+    [ -z "${host}" ] && host=${build}
+    target=${host}
+fi
+
+check_compiler() {
+    if [ -z "$CC" ]; then
+        printf "Looking for compiler... "
+        for b in ${target}- ""; do
+            for cc in gcc pcc icc cc clang; do
+                if type $b$cc > /dev/null 2>&1; then
+                    CC=$b$cc
+                    echo "$CC"
+                    break
+                fi
+            done
+            [ -n "$CC" ] && break
+        done
+        if [ -z "$CC" ]; then
+            echo
+            echo "no suitable compiler found" >&2
+            exit 1
+        fi
+    else
+        echo "using compiler $CC"
+    fi
+}
+
+check_prog() {
+    type "$1" >/dev/null 2>&1
+}
+
+check_compiler
+
+required_progs="${cargo} ${pandoc}"
+
+for prog in ${required_progs}; do
+    if ! check_prog ${prog}; then
+        echo "ERROR: '${prog}' is missing." >&2
+        exit 1
+    else
+        echo "Found ${prog}"
+    fi
+done
+
+cat <<EOF >config.mk
+#
+# Generated file. DO NOT EDIT!
+#
+
+prefix ?= ${prefix}
+eprefix ?= ${eprefix}
+bindir ?= ${bindir}
+sbindir ?= ${sbindir}
+libexecdir ?= ${libexecdir}
+sysconfdir ?= ${sysconfdir}
+localstatedir ?= ${localstatedir}
+datadir ?= ${datadir}
+
+ENABLE_DEBUG ?= ${enable_debug}
+ENABLE_MANPAGES ?= ${enable_manpages}
+
+CARGO ?= ${cargo}
+PANDOC ?= ${pandoc}
+
+EOF
+
+if [ "${build}" != "${host}" ]; then
+    mkdir -p .cargo
+    cat <<EOF >.cargo/config
+[target.${target}]
+linker="$CC"
+EOF
+    echo "CARGO_TARGET_NAME ?= ${target}" >> config.mk
+fi

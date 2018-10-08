@@ -1,1 +1,1 @@
-../../common/skeleton/config.h.cmake
+../../common-cmake/skeleton/config.h.cmake

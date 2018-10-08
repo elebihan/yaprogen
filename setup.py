@@ -37,6 +37,7 @@ def collect_data_files(dst_dir, src_dir):
             data_files.append((dst, [src]))
     return data_files
 
+
 setup(name='yaprogen',
       version=yaprogen.__version__,
       description='Yet Another Project Generator',

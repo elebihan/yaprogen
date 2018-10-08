@@ -1,3 +1,13 @@
+#
+# {{project_name}} - {{description}}
+#
+# {{copyright_notice}}
+#
+{{#license_notice}}
+# {{line}}
+{{/license_notice}}
+#
+
 project('{{project_name}}', 'c',
         version : '0.1.1',
         license : '{{license}}',
@@ -28,15 +38,23 @@ sysconfdir = join_paths(prefixdir, get_option('sysconfdir'))
 includedir = join_paths(prefixdir, get_option('includedir'))
 datadir = join_paths(prefixdir, get_option('datadir'))
 
+pkg_defs = [
+  ['PACKAGE_NAME', meson.project_name()],
+  ['PACKAGE_STRING', '@0@ @1@'.format(meson.project_name(),
+                                      meson.project_version())],
+  ['PACKAGE_VERSION', meson.project_version()],
+]
+
 conf = configuration_data()
-conf.set_quoted('PACKAGE_STRING', meson.project_name() + ' ' +
-                                  meson.project_version())
-conf.set_quoted('PACKAGE_VERSION', meson.project_version())
+
+foreach def : pkg_defs
+  conf.set_quoted(def[0], def[1])
+endforeach
 
 config_h = configure_file(output : 'config.h',
                           configuration : conf)
 
-includes = include_directories('{{project_normalized}}')
+includes = include_directories('.', '{{project_normalized}}')
 
 subdir('{{project_normalized}}')
 

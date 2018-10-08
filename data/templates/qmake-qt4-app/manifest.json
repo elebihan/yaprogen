@@ -1,0 +1,5 @@
+{
+	"name": "qmake-qt4-app",
+	"description": "Qt4 graphical application (using Qmake)",
+	"author": "Eric Le Bihan"
+}

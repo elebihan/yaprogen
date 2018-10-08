@@ -1,0 +1,15 @@
+#
+# {{project_name}} - {{description}}
+#
+# {{copyright_notice}}
+#
+{{#license_notice}}
+# {{line}}
+{{/license_notice}}
+#
+
+sources = [
+  '{{executable_camel}}.cs',
+]
+
+executable('{{executable_name}}', sources, install : true)

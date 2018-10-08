@@ -31,12 +31,14 @@ import os
 from gettext import gettext as _
 from .common import get_data_dir
 
+
 def get_default_notices_dir():
     """Returns the path to the default license notices directory.
 
     rtype: str
     """
     return os.path.join(get_data_dir(), 'notices')
+
 
 def _list_available_license_notices():
     directories = [get_default_notices_dir()]
@@ -50,6 +52,7 @@ def _list_available_license_notices():
                 notices[root] = os.path.join(directory, entry)
     return notices
 
+
 def list_available_licenses():
     """Returns a list of the available licenses.
 
@@ -57,6 +60,7 @@ def list_available_licenses():
     rtype: list of str
     """
     return sorted(_list_available_license_notices().keys())
+
 
 def get_license_notice_text(license):
     """Returns the text for the notice for the matching license.
@@ -66,7 +70,7 @@ def get_license_notice_text(license):
     """
     notices = _list_available_license_notices()
     if license not in notices:
-        raise KeyError(_("Unknown license"))
+        raise ValueError(_("{} is not a supported license").format(license))
     with open(notices[license]) as f:
         return f.read()
 

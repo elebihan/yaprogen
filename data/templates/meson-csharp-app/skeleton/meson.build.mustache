@@ -1,0 +1,39 @@
+#
+# {{project_name}} - {{description}}
+#
+# {{copyright_notice}}
+#
+{{#license_notice}}
+# {{line}}
+{{/license_notice}}
+#
+
+project('{{project_name}}', 'cs',
+        version : '0.1.1',
+        license : '{{license}}',
+        default_options : [
+          'prefix=/usr/local',
+          'sysconfdir=/etc',
+        ],
+        meson_version : '>= 0.43')
+
+prefixdir = get_option('prefix')
+bindir = join_paths(prefixdir, get_option('bindir'))
+libdir = join_paths(prefixdir, get_option('libdir'))
+sysconfdir = join_paths(prefixdir, get_option('sysconfdir'))
+includedir = join_paths(prefixdir, get_option('includedir'))
+datadir = join_paths(prefixdir, get_option('datadir'))
+
+subdir('src')
+
+status = [
+  '@0@ @1@'.format(meson.project_name(), meson.project_version()),
+
+  'prefix:         @0@'.format(prefixdir),
+  'sysconfdir:     @0@'.format(sysconfdir),
+  'libdir:         @0@'.format(libdir),
+  'includedir:     @0@'.format(includedir),
+  'bindir:         @0@'.format(bindir),
+]
+
+message('\n         '.join(status))

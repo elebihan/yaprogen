@@ -35,7 +35,11 @@ configure_file(${CMAKE_CURRENT_SOURCE_DIR}/config.h.cmake
 # ...and we want to find 'config.h' when compiling
 include_directories(${CMAKE_CURRENT_BINARY_DIR})
 
-# Check for some tools
+message(STATUS "Looking for xmlto")
+find_program (XMLTO "xmlto")
+if(NOT_XMLTO)
+  message(FATAL_ERROR "Can not find xmlto")
+endif(NOT_XMLTO)
 
 option(ENABLE_API_DOCS "generate API documentation using Doxygen" OFF)
 
@@ -68,6 +72,7 @@ add_custom_target(dist COMMAND ${CMAKE_MAKE_PROGRAM} package_source)
 # Tell CMake to look for CMakeLists.txt files in subdirectories
 add_subdirectory(!!project_normalized!!)
 add_subdirectory(doc)
+add_subdirectory(man)
 add_subdirectory(tools)
 
 # vim: ts=4 sts=4 sw=4 et ai

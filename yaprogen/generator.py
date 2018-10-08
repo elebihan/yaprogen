@@ -36,6 +36,7 @@ from gettext import gettext as _
 from datetime import datetime
 from .licensing import get_license_notice_text
 
+
 def split(string):
     crumbs = []
     for chunk in re.split('\W+', string):
@@ -46,21 +47,26 @@ def split(string):
             crumbs.append(chunk)
     return crumbs
 
+
 def normalize(string):
     fields = split(string)
     return '-'.join(map(lambda x: x.lower(), fields))
+
 
 def lower(string):
     fields = split(string)
     return '_'.join(map(lambda x: x.lower(), fields))
 
+
 def upper(string):
     fields = split(string)
     return '_'.join(map(lambda x: x.upper(), fields))
 
+
 def camelize(string):
     fields = split(string)
     return ''.join(map(lambda x: x.capitalize(), fields))
+
 
 class Generator(object):
     """Generates a project using a template.
@@ -83,6 +89,7 @@ class Generator(object):
         self.homepage = None
         self.quiet = False
         self.enable_cross_platform = False
+        self.use_spdx = False
         self._values = {}
         self.overrides = {}
 
@@ -128,9 +135,13 @@ class Generator(object):
 
         notice_lines = []
         if self.license:
-            text = get_license_notice_text(self.license)
-            for line in text.split('\n'):
+            if self.use_spdx:
+                line = "SPDX-License-Identifier: {0}".format(self.license)
                 notice_lines.append({'line': line})
+            else:
+                text = get_license_notice_text(self.license)
+                for line in text.split('\n'):
+                    notice_lines.append({'line': line})
 
         description = self.description or _("Insert description here")
         homepage = self.homepage or "https://some/where"
@@ -149,7 +160,7 @@ class Generator(object):
             'author_surname': surname,
             'author_email': self.email,
             'company_name': self.company,
-            'homepage': self.homepage,
+            'homepage': homepage,
             'project_name': self._name,
             'project_normalized': normalize(self._name),
             'project_lower': lower(self._name),
