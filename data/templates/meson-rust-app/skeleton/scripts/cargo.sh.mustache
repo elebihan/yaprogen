@@ -17,4 +17,4 @@ if [ "$3" = "release" ]; then
     CARGO_OPTS="${CARGO_OPTS} --release"
 fi
 
-cargo build ${CARGO_OPTS} && cp $1/target/$3/{{project_name}} $2
+cargo build ${CARGO_OPTS} && cp $1/target/$3/{{executable_name}} $2

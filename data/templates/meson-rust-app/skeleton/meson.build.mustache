@@ -43,7 +43,7 @@ cargo_script = find_program('scripts/cargo.sh')
 
 cargo_build = custom_target('cargo-build',
                             build_by_default: true,
-                            output: ['{{project_name}}'],
+                            output: ['{{executable_name}}'],
                             install: true,
                             install_dir: bindir,
                             command: [cargo_script,
