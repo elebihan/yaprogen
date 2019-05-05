@@ -1,0 +1,5 @@
+{
+	"name": "meson-dlang-app",
+	"description": "D application (using Meson)",
+	"author": "Eric Le Bihan"
+}
