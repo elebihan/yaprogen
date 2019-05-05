@@ -1,0 +1,14 @@
+/*
+ * This file is part of {{project_name}}
+ *
+ * {{copyright_notice}}
+ *
+ {{#license_notice}}
+ * {{line}}
+ {{/license_notice}}
+*/
+
+module appinfo;
+
+static immutable appName = @APP_NAME@;
+static immutable appVersion = @APP_VERSION@;

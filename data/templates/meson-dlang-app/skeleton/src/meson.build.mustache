@@ -1,0 +1,20 @@
+#
+# {{project_name}} - {{description}}
+#
+# {{copyright_notice}}
+#
+{{#license_notice}}
+# {{line}}
+{{/license_notice}}
+#
+
+appinfo = configure_file(input : 'appinfo.d.in',
+                         output : 'appinfo.d',
+                         configuration : conf)
+
+sources = [
+  'app.d',
+  appinfo,
+]
+
+executable('{{executable_name}}', sources, install : true)
