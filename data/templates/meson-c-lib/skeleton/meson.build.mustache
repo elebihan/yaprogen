@@ -16,7 +16,7 @@ project('{{project_name}}', 'c',
           'prefix=/usr',
           'sysconfdir=/etc',
         ],
-        meson_version : '>= 0.43')
+        meson_version : '>= 0.50')
 
 {{api_lower}}_version = meson.project_version()
 ver_arr = {{api_lower}}_version.split('.')
