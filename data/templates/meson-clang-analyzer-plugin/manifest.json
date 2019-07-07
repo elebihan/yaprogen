@@ -1,0 +1,6 @@
+{
+	"name": "meson-clang-analyzer-plugin",
+	"description": "Clang Static Analyzer Plug-in (using Meson)",
+	"author": "Eric Le Bihan",
+	"is-library": true
+}

@@ -1,0 +1,39 @@
+/*
+ * This file is part of {{project_name}}
+ *
+ * {{copyright_notice}}
+ *
+ {{#license_notice}}
+ * {{line}}
+ {{/license_notice}}
+*/
+
+#include <clang/StaticAnalyzer/Core/Checker.h>
+#include <clang/StaticAnalyzer/Core/CheckerRegistry.h>
+
+using namespace clang;
+using namespace ento;
+
+namespace {
+class {{project_camel}}: public Checker < check::PreCall,
+                                  check::PostCall,
+                                  check::Location > {
+
+public:
+    {{project_camel}}(void) {};
+
+    void checkPreCall(const CallEvent &, CheckerContext &) const {};
+    void checkPostCall(const CallEvent &, CheckerContext &) const {};
+    void checkLocation(SVal , bool , const Stmt* , CheckerContext &) const {};
+};
+
+}
+
+extern "C"
+void clang_registerCheckers(CheckerRegistry &registry) {
+    registry.addChecker<{{project_camel}}>("{{project_normalized}}",
+                                             "{{project_name}}");
+}
+
+extern "C"
+const char clang_analyzerAPIVersionString[] = CLANG_ANALYZER_API_VERSION_STRING;
