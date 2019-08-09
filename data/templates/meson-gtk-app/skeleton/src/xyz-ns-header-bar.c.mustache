@@ -1,0 +1,101 @@
+/*
+ * This file is part of {{project_name}}
+ *
+ * {{copyright_notice}}
+ *
+{{#license_notice}}
+ * {{line}}
+{{/license_notice}}
+*/
+
+#include "{{ns_normalized}}-header-bar.h"
+
+#include "config.h"
+
+typedef struct
+{
+	GtkWidget *application_menu_button;
+} {{ns_name}}HeaderBarPrivate;
+
+G_DEFINE_TYPE_WITH_PRIVATE({{ns_name}}HeaderBar, {{ns_lower}}_header_bar, GTK_TYPE_HEADER_BAR)
+
+static GtkWidget* {{ns_lower}}_header_bar_create_application_menu_button({{ns_name}}HeaderBar *self)
+{
+	GtkBuilder *builder;
+	GMenuModel *menu;
+	GtkWidget *button;
+	GtkWidget *image;
+
+	builder = gtk_builder_new_from_resource("{{app_path}}/gtk/menus.ui");
+	menu = G_MENU_MODEL(gtk_builder_get_object(builder, "application-menu"));
+
+	image = gtk_image_new();
+	gtk_image_set_from_icon_name(GTK_IMAGE(image), "open-menu-symbolic",
+				     GTK_ICON_SIZE_MENU);
+	button = gtk_menu_button_new();
+	gtk_button_set_image(GTK_BUTTON(button), image);
+        gtk_menu_button_set_menu_model(GTK_MENU_BUTTON(button), menu);
+
+	g_object_unref(builder);
+
+	return button;
+}
+
+static void {{ns_lower}}_header_bar_dispose(GObject *object)
+{
+	{{ns_name}}HeaderBar *self;
+	{{ns_name}}HeaderBarPrivate *priv;
+
+	self = {{ns_upper}}_HEADER_BAR(object);
+	priv = {{ns_lower}}_header_bar_get_instance_private(self);
+
+	/* Unref private members here */
+
+	G_OBJECT_CLASS({{ns_lower}}_header_bar_parent_class)->dispose(object);
+}
+
+static void {{ns_lower}}_header_bar_finalize(GObject *object)
+{
+	{{ns_name}}HeaderBar *self;
+	{{ns_name}}HeaderBarPrivate *priv;
+
+	self = {{ns_upper}}_HEADER_BAR(object);
+	priv = {{ns_lower}}_header_bar_get_instance_private(self);
+
+	/* Free allocated private members here */
+
+	G_OBJECT_CLASS({{ns_lower}}_header_bar_parent_class)->finalize(object);
+}
+
+static void {{ns_lower}}_header_bar_init({{ns_name}}HeaderBar *self)
+{
+	{{ns_name}}HeaderBarPrivate *priv;
+	GtkWidget *button;
+
+	priv = {{ns_lower}}_header_bar_get_instance_private(self);
+
+	button = {{ns_lower}}_header_bar_create_application_menu_button(self);
+	priv->application_menu_button = button;
+
+	gtk_header_bar_set_show_close_button(GTK_HEADER_BAR(self), TRUE);
+	gtk_header_bar_set_title(GTK_HEADER_BAR(self), PACKAGE_NAME);
+	gtk_header_bar_pack_end(GTK_HEADER_BAR(self), button);
+}
+
+static void {{ns_lower}}_header_bar_class_init({{ns_name}}HeaderBarClass *klass)
+{
+	G_OBJECT_CLASS(klass)->dispose = {{ns_lower}}_header_bar_dispose;
+	G_OBJECT_CLASS(klass)->finalize = {{ns_lower}}_header_bar_finalize;
+}
+
+/**
+ * {{ns_lower}}_header_bar_new:
+ *
+ * Create a new {{ns_name}}HeaderBar instance.
+ *
+ * Returns: a new #{{ns_name}}HeaderBar
+ */
+{{ns_name}}HeaderBar* {{ns_lower}}_header_bar_new(void)
+{
+	return g_object_new({{ns_upper}}_TYPE_HEADER_BAR, NULL);
+}

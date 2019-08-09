@@ -1,0 +1,120 @@
+/*
+ * This file is part of {{project_name}}
+ *
+ * {{copyright_notice}}
+ *
+{{#license_notice}}
+ * {{line}}
+{{/license_notice}}
+*/
+
+#include <gio/gio.h>
+#include <gtk/gtk.h>
+
+#include "{{ns_normalized}}-application.h"
+#include "{{ns_normalized}}-application-actions.h"
+#include "{{ns_normalized}}-application-window.h"
+
+#include "config.h"
+
+typedef struct _{{ns_name}}ApplicationPrivate
+{
+	/* Insert members here */
+	gpointer reserved;
+} {{ns_name}}ApplicationPrivate;
+
+G_DEFINE_TYPE_WITH_PRIVATE({{ns_name}}Application, {{ns_lower}}_application, GTK_TYPE_APPLICATION)
+
+static void {{ns_lower}}_application_shutdown (GApplication *application)
+{
+	g_assert(GTK_IS_APPLICATION(application));
+
+	G_APPLICATION_CLASS({{ns_lower}}_application_parent_class)->shutdown(application);
+}
+
+static void {{ns_lower}}_application_startup (GApplication *application)
+{
+	g_assert(GTK_IS_APPLICATION(application));
+
+	{{ns_lower}}_application_actions_create({{ns_upper}}_APPLICATION(application));
+
+	G_APPLICATION_CLASS({{ns_lower}}_application_parent_class)->startup(application);
+
+	g_set_application_name(PACKAGE_NAME);
+}
+
+static void {{ns_lower}}_application_activate(GApplication *application)
+{
+	{{ns_name}}Application *self;
+	{{ns_name}}ApplicationWindow *app_window;
+	GtkWindow *window;
+
+	g_assert(GTK_IS_APPLICATION(application));
+
+	window = gtk_application_get_active_window(GTK_APPLICATION(application));
+
+	if (window == NULL) {
+		self = {{ns_upper}}_APPLICATION(application);
+		app_window = {{ns_lower}}_application_window_new(GTK_APPLICATION(self));
+		gtk_widget_show_all(GTK_WIDGET(app_window));
+	} else {
+		gtk_window_present(window);
+	}
+}
+
+static void {{ns_lower}}_application_dispose(GObject *object)
+{
+	{{ns_name}}Application *self;
+	{{ns_name}}ApplicationPrivate *priv;
+
+	self = {{ns_upper}}_APPLICATION(object);
+	priv = {{ns_lower}}_application_get_instance_private(self);
+
+	/* Unref private members here */
+}
+
+static void {{ns_lower}}_application_finalize(GObject *object)
+{
+	{{ns_name}}Application *self;
+	{{ns_name}}ApplicationPrivate *priv;
+
+	self = {{ns_upper}}_APPLICATION(object);
+	priv = {{ns_lower}}_application_get_instance_private(self);
+
+	/* Free allocated private members here */
+
+	G_OBJECT_CLASS({{ns_lower}}_application_parent_class)->finalize(object);
+}
+
+static void {{ns_lower}}_application_init({{ns_name}}Application *self)
+{
+}
+
+static void {{ns_lower}}_application_class_init({{ns_name}}ApplicationClass *klass)
+{
+    GObjectClass *gobject_class;
+    GApplicationClass *gapplication_class;
+
+    gobject_class = G_OBJECT_CLASS(klass);
+    gapplication_class = G_APPLICATION_CLASS(klass);
+
+    gobject_class->dispose = {{ns_lower}}_application_dispose;
+    gobject_class->finalize = {{ns_lower}}_application_finalize;
+    gapplication_class->activate = {{ns_lower}}_application_activate;
+    gapplication_class->shutdown = {{ns_lower}}_application_shutdown;
+    gapplication_class->startup = {{ns_lower}}_application_startup;
+}
+
+/**
+ * {{ns_lower}}_application_new:
+ *
+ * Create a new {{ns_name}}Application instance
+ *
+ * Returns: a new #{{ns_name}}Application
+ */
+{{ns_name}}Application* {{ns_lower}}_application_new(void)
+{
+	return g_object_new({{ns_upper}}_TYPE_APPLICATION, "application-id",
+			    "{{app_id}}", "flags",
+			    G_APPLICATION_FLAGS_NONE, NULL);
+}

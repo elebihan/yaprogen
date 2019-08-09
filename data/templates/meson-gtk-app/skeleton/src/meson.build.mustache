@@ -1,0 +1,32 @@
+#
+# {{project_name}} - {{description}}
+#
+# {{copyright_notice}}
+#
+{{#license_notice}}
+    # {{line}}
+{{/license_notice}}
+#
+
+sources = files(
+  'main.c',
+  '{{ns_normalized}}-application.c',
+  '{{ns_normalized}}-application.h',
+  '{{ns_normalized}}-application-actions.c',
+  '{{ns_normalized}}-application-actions.h',
+  '{{ns_normalized}}-application-window.c',
+  '{{ns_normalized}}-application-window.h',
+  '{{ns_normalized}}-header-bar.c',
+  '{{ns_normalized}}-header-bar.h',
+)
+
+deps = [
+  gtk_dep,
+]
+
+executable('{{project_normalized}}',
+           sources,
+           dependencies : deps,
+           include_directories : config_inc,
+           install : true,
+)

@@ -1,0 +1,41 @@
+/*
+ * This file is part of {{project_name}}
+ *
+ * {{copyright_notice}}
+ *
+{{#license_notice}}
+ * {{line}}
+{{/license_notice}}
+*/
+
+#ifndef {{ns_upper}}_HEADER_BAR_H
+#define {{ns_upper}}_HEADER_BAR_H
+
+#include <gtk/gtk.h>
+
+G_BEGIN_DECLS
+
+#define {{ns_upper}}_TYPE_HEADER_BAR ({{ns_lower}}_header_bar_get_type ())
+#define {{ns_upper}}_HEADER_BAR(object) (G_TYPE_CHECK_INSTANCE_CAST((object), {{ns_upper}}_TYPE_HEADER_BAR, {{ns_name}}HeaderBar))
+
+typedef struct _{{ns_name}}HeaderBar {{ns_name}}HeaderBar;
+typedef struct _{{ns_name}}HeaderBarClass {{ns_name}}HeaderBarClass;
+
+struct _{{ns_name}}HeaderBar
+{
+	/*< private >*/
+	GtkHeaderBar parent_instance;
+};
+
+struct _{{ns_name}}HeaderBarClass
+{
+	/*< private >*/
+	GtkHeaderBarClass parent_class;
+};
+
+GType {{ns_lower}}_header_bar_get_type(void);
+{{ns_name}}HeaderBar *{{ns_lower}}_header_bar_new(void);
+
+G_END_DECLS
+
+#endif /* !{{ns_upper}}_HEADER_BAR_H */

@@ -1,0 +1,23 @@
+#
+# {{project_name}} - {{description}}
+#
+# {{copyright_notice}}
+#
+{{#license_notice}}
+# {{line}}
+{{/license_notice}}
+#
+
+scalable_dir = join_paths('hicolor', 'scalable', 'apps')
+
+install_data(
+  join_paths(scalable_dir, '{{app_id}}.svg'),
+  install_dir: join_paths(datadir, 'icons', scalable_dir),
+)
+
+symbolic_dir = join_paths('hicolor', 'symbolic', 'apps')
+
+install_data(
+  join_paths(symbolic_dir, '{{app_id}}-symbolic.svg'),
+  install_dir: join_paths(datadir, 'icons', symbolic_dir),
+)

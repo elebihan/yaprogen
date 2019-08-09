@@ -1,0 +1,21 @@
+# Hacking on {{project_name}}
+
+## Localisation
+
+To generate POT file, execute:
+
+```
+ninja -C build {{project_normalized}}-pot
+```
+
+To generate PO files from POT file, execute:
+
+```
+ninja -C build {{project_normalized}}-update-po
+```
+
+To generate translation without installing
+
+```
+ninja -C build {{project_normalized}}-gmo
+```
