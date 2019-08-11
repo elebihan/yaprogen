@@ -68,6 +68,16 @@ def camelize(string):
     return ''.join(map(lambda x: x.capitalize(), fields))
 
 
+def namespacify(string):
+    fields = split(string)
+    if len(fields) == 1:
+        return fields[0].lower()
+    else:
+        end = 3 if len(fields) >= 3 else 2
+        ns = ''.join(map(lambda f: f[0].lower(), fields[:end]))
+        return ns[0].upper() + ns[1:]
+
+
 class Generator(object):
     """Generates a project using a template.
 
@@ -105,6 +115,7 @@ class Generator(object):
             firstname, surname = '', ''
 
         name = normalize(self._name)
+        nsname = namespacify(self._name)
         libname = linkname = apiname = toolname = execname = name
         if self._template.is_library:
             if name.startswith('lib'):
@@ -120,6 +131,7 @@ class Generator(object):
         linkname = self.overrides.get('linkname', linkname)
         execname = self.overrides.get('execname', execname)
         toolname = self.overrides.get('toolname', toolname)
+        nsname = self.overrides.get('nsname', nsname)
 
         if not self.copyright_holder:
             if self.author:
@@ -179,6 +191,11 @@ class Generator(object):
             'library_upper': upper(libname),
             'library_camel': camelize(libname),
             'link_name': linkname,
+            'ns_name': nsname,
+            'ns_normalized': normalize(nsname),
+            'ns_lower': lower(nsname),
+            'ns_upper': upper(nsname),
+            'ns_camel': camelize(nsname),
             'tool_name': toolname,
             'tool_lower': lower(toolname),
             'tool_upper': upper(toolname),
@@ -213,6 +230,10 @@ class Generator(object):
             'xyz_lib': 'library_lower',
             'XYZ_LIB': 'library_upper',
             'XyzLib': 'library_camel',
+            'xyz-ns': 'ns_normalized',
+            'xyz_ns': 'ns_lower',
+            'XYZ_NS': 'ns_upper',
+            'XyzNs': 'ns_camel',
         }
 
         for filename in self._template.files:
