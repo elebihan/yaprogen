@@ -158,6 +158,11 @@ class Generator(object):
         description = self.description or _("Insert description here")
         homepage = self.homepage or "https://some/where"
 
+        company_name = self.company or 'unknown'
+
+        app_id = "com.{}.{}".format(company_name, normalize(self._name))
+        app_path = "/com/{}/{}".format(company_name, normalize(self._name))
+
         self._values = {
             'description': description,
             'license_alias': self.license,
@@ -200,6 +205,8 @@ class Generator(object):
             'tool_lower': lower(toolname),
             'tool_upper': upper(toolname),
             'is_cross_platform': self.enable_cross_platform,
+            'app_id': app_id,
+            'app_path': app_path,
         }
 
         self._values.update(self._template.extra_variables)
@@ -234,6 +241,7 @@ class Generator(object):
             'xyz_ns': 'ns_lower',
             'XYZ_NS': 'ns_upper',
             'XyzNs': 'ns_camel',
+            'xyz-app_id': 'app_id',
         }
 
         for filename in self._template.files:
