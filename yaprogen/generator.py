@@ -246,11 +246,11 @@ class Generator(object):
 
         for filename in self._template.files:
             target = filename.replace(path, destination)
+            for k, v in subs.items():
+                target = target.replace(k, self._values[v])
+            target = target.replace('xyz',
+                                    self._values['project_normalized'])
             if target.endswith('.mustache'):
-                for k, v in subs.items():
-                    target = target.replace(k, self._values[v])
-                target = target.replace('xyz',
-                                        self._values['project_normalized'])
                 target = target.replace('.mustache', '')
                 self._convert_file(filename, target)
             else:
