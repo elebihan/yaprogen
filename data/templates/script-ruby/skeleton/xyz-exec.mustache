@@ -1,0 +1,30 @@
+#!/usr/bin/env ruby
+#
+# {{project_name}} - {{description}}
+#
+# {{copyright_notice}}
+#
+{{#license_notice}}
+# {{line}}
+{{/license_notice}}
+#
+
+require 'optparse'
+
+VERSION = '0.1.1'
+
+OptionParser.new do |parser|
+  parser.banner = "Usage: #{File.basename $PROGRAM_NAME} [OPTIONS]"
+  parser.separator ''
+  parser.separator 'Options:'
+  parser.on('-h', '--help', 'Print help information') do
+    puts parser
+  end
+  parser.on('-V', '--version', 'Print program version') do
+    puts VERSION
+  end
+end.parse!
+
+# Insert your code here
+
+# vim: ts=2 sw=2 et ai
