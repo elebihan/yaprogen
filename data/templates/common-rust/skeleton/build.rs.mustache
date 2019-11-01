@@ -1,0 +1,24 @@
+//
+// This file is part of {{project_name}}
+//
+// {{copyright_notice}}
+//
+{{#license_notice}}
+// {{line}}
+{{/license_notice}}
+//
+
+#[macro_use]
+extern crate clap;
+
+use clap::Shell;
+
+include!("src/cli.rs");
+
+fn main() {
+    let outdir = std::env::var_os("OUT_DIR").unwrap();
+    let mut app = build_cli();
+    for shell in &[Shell::Bash, Shell::Zsh] {
+        app.gen_completions(crate_name!(), *shell, &outdir);
+    }
+}
