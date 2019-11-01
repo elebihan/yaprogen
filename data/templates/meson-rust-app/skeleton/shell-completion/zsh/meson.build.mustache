@@ -1,0 +1,13 @@
+#
+# {{project_name}} - {{description}}
+#
+# {{copyright_notice}}
+#
+{{#license_notice}}
+# {{line}}
+{{/license_notice}}
+#
+
+zshcompletiondir = join_paths(datadir, 'zsh/site-functions')
+
+install_data('_{{executable_name}}', install_dir : zshcompletiondir)
