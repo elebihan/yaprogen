@@ -38,23 +38,26 @@ else
   cargo_mode = 'release'
 endif
 
-cargo = find_program('cargo', required: false)
-cargo_script = find_program('scripts/cargo.sh')
+cargo = find_program('cargo')
+cargo_vendor = find_program('cargo-vendor', required: false)
+cargo_wrapper = find_program('build-aux/cargo')
 
-cargo_build = custom_target('cargo-build',
-                            build_by_default: true,
-                            output: ['{{executable_name}}'],
-                            install: true,
-                            install_dir: bindir,
-                            command: [cargo_script,
-                                      '@CURRENT_SOURCE_DIR@',
-                                      '@OUTPUT@',
-                                      cargo_mode,
-                                     ])
+program = custom_target('{{executable_name}}',
+                        build_by_default: true,
+                        console: true,
+                        output: ['{{executable_name}}'],
+                        install: true,
+                        install_dir: bindir,
+                        command: [cargo_wrapper,
+                                  '@CURRENT_SOURCE_DIR@',
+                                  '@OUTPUT@',
+                                  cargo_mode,
+                                 ])
 
 archive = meson.project_name() + '-' + meson.project_version()
-release = run_target('release',
-                     command : ['scripts/release.sh', archive])
+distribute = run_target('distribute',
+                        depends : program,
+                        command : ['build-aux/distribute', archive])
 
 status = [
   '@0@ @1@'.format(meson.project_name(), meson.project_version()),
