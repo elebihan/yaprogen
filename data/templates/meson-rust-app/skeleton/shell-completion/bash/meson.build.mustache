@@ -1,0 +1,13 @@
+#
+# {{project_name}} - {{description}}
+#
+# {{copyright_notice}}
+#
+{{#license_notice}}
+# {{line}}
+{{/license_notice}}
+#
+
+bashcompletiondir = join_paths(datadir, 'bash-completion/completions')
+
+install_data('{{executable_name}}.bash', install_dir : bashcompletiondir)
