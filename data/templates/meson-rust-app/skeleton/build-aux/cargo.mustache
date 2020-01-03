@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/usr/bin/env python3
 #
 # {{project_name}} - {{description}}
 #
@@ -9,12 +9,19 @@
 {{/license_notice}}
 #
 
-export CARGO_HOME=$1/target/cargo-home
+import os
+import shutil
+import subprocess
+import sys
 
-CARGO_OPTS="--manifest-path $1/Cargo.toml"
+srcdir, destdir, mode = sys.argv[1:4]
 
-if [ "$3" = "release" ]; then
-    CARGO_OPTS="${CARGO_OPTS} --release"
-fi
+args = ['cargo', 'build', '--manifest-path', os.path.join(srcdir, 'Cargo.toml')]
+if mode == 'release':
+    args.append('--release')
 
-cargo build ${CARGO_OPTS} && cp $1/target/$3/{{executable_name}} $2
+subprocess.check_call(args, env=dict(os.environ,
+                                     CARGO_HOME=os.path.join(srcdir, 'target',
+                                                             'cargo-home')))
+
+shutil.copy(os.path.join(srcdir, 'target', mode, '{{executable_name}}'), destdir)
