@@ -1,0 +1,43 @@
+//
+// This file is part of {{project_name}}
+//
+// {{copyright_notice}}
+//
+{{#license_notice}}
+// {{line}}
+{{/license_notice}}
+//
+
+use std::env::args;
+use std::error;
+use std::result::Result;
+
+use gio::prelude::*;
+
+use gettextrs::{bindtextdomain, textdomain};
+
+mod pkginfo;
+mod resources;
+mod actions;
+mod app;
+mod header_bar;
+
+use crate::app::App;
+use crate::pkginfo::{APPLICATION_NAME, GETTEXT_PACKAGE, LOCALEDIR};
+
+fn main() -> Result<(), Box<dyn error::Error>> {
+
+    resources::init()?;
+
+    bindtextdomain(GETTEXT_PACKAGE, LOCALEDIR);
+    textdomain(GETTEXT_PACKAGE);
+
+    let app = gtk::Application::new(Some(APPLICATION_NAME), Default::default())?;
+    app.connect_startup(|app| {
+        App::on_startup(app);
+    });
+
+    app.run(&args().collect::<Vec<_>>());
+
+    Ok(())
+}

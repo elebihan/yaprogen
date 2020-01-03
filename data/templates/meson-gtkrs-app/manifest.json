@@ -1,0 +1,5 @@
+{
+	"name": "meson-gtkrs-app",
+	"description": "Gtk-rs application (using Meson)",
+	"author": "Eric Le Bihan"
+}

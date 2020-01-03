@@ -1,0 +1,34 @@
+//
+// This file is part of {{project_name}}
+//
+// {{copyright_notice}}
+//
+{{#license_notice}}
+// {{line}}
+{{/license_notice}}
+//
+
+use gtk::{self, prelude::*};
+use gio;
+
+pub fn create<P: gtk::GtkWindowExt>(window: &P) -> gtk::HeaderBar {
+    let header_bar = gtk::HeaderBar::new();
+    header_bar.set_show_close_button(true);
+    header_bar.set_title(Some("{{project_name}}"));
+
+    let builder = gtk::Builder::new_from_resource("{{app_path}}/gtk/menus.ui");
+    let menu = builder.get_object::<gio::MenuModel>("application-menu")
+                      .expect("Can not find menu");
+
+    let menu_button = gtk::MenuButton::new();
+    let menu_img = gtk::Image::new_from_icon_name(Some("open-menu-symbolic"),
+                                                  gtk::IconSize::Menu);
+    menu_button.set_image(Some(&menu_img));
+    menu_button.set_menu_model(Some(&menu));
+
+    header_bar.pack_end(&menu_button);
+
+    window.set_titlebar(Some(&header_bar));
+
+    header_bar
+}

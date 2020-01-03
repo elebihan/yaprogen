@@ -1,0 +1,23 @@
+//
+// This file is part of {{project_name}}
+//
+// {{copyright_notice}}
+//
+{{#license_notice}}
+// {{line}}
+{{/license_notice}}
+//
+
+use std::path::PathBuf;
+use glib;
+
+use crate::pkginfo;
+
+pub fn init() -> std::result::Result<(), glib::Error> {
+    let mut path = PathBuf::new();
+    path.push(pkginfo::DATADIR);
+    path.push("{{project_normalized}}.gresource");
+    let resource = gio::Resource::load(path)?;
+    gio::resources_register(&resource);
+    Ok(())
+}
