@@ -1,0 +1,40 @@
+//
+// This file is part of {{project_name}}
+//
+// {{copyright_notice}}
+//
+{{#license_notice}}
+// {{line}}
+{{/license_notice}}
+//
+
+const std = @import("std");
+const pkgs = @import("deps.zig").pkgs;
+
+const exe_name = "{{executable_name}}";
+const exe_version = "0.1.1";
+
+pub fn build(b: *std.build.Builder) void {
+    const target = b.standardTargetOptions(.{});
+    const mode = b.standardReleaseOptions();
+
+    const exe_options = b.addOptions();
+    exe_options.addOption([]const u8, "exe_name", exe_name);
+    exe_options.addOption([]const u8, "exe_version", exe_version);
+
+    const exe = b.addExecutable(exe_name, "src/main.zig");
+    exe.setTarget(target);
+    exe.setBuildMode(mode);
+    exe.addOptions("build_options", exe_options);
+    exe.addPackage(pkgs.clap);
+    exe.install();
+
+    const run_cmd = exe.run();
+    run_cmd.step.dependOn(b.getInstallStep());
+    if (b.args) |args| {
+        run_cmd.addArgs(args);
+    }
+
+    const run_step = b.step("run", "Run the app");
+    run_step.dependOn(&run_cmd.step);
+}

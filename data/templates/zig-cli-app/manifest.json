@@ -1,0 +1,6 @@
+{
+	"name": "zig-cli-app",
+	"description": "Zig command line application",
+	"author": "Eric Le Bihan",
+	"is-library": false
+}

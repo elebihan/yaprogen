@@ -1,0 +1,69 @@
+//
+// This file is part of {{project_name}}
+//
+// {{copyright_notice}}
+//
+{{#license_notice}}
+// {{line}}
+{{/license_notice}}
+//
+
+const std = @import("std");
+const clap = @import("clap");
+const build_options = @import("build_options");
+
+var gpa = std.heap.GeneralPurposeAllocator(.{}){};
+
+pub fn main() !void {
+    const params = comptime [_]clap.Param(clap.Help){
+        clap.parseParam("-h, --help     Show this help message and exit") catch unreachable,
+        clap.parseParam("-v, --version  Show program version and exit") catch unreachable,
+        clap.parseParam("<ARGUMENT>") catch unreachable,
+    };
+
+    var diag = clap.Diagnostic{};
+    var args = clap.parse(clap.Help, &params, .{ .diagnostic = &diag }) catch |err| {
+        diag.report(std.io.getStdErr().writer(), err) catch {};
+        std.process.exit(1);
+    };
+    defer args.deinit();
+
+    const stdout = std.io.getStdOut().writer();
+
+    if (args.flag("--help")) {
+        printUsageAndExit(stdout, params[0..]);
+    }
+
+    if (args.flag("--version")) {
+        printVersionAndExit(stdout);
+    }
+
+    if (args.positionals().len == 0) {
+        printErrorAndExit("Missing argument\n", .{});
+    }
+}
+
+fn printUsage(stream: anytype, comptime params: []const clap.Param(clap.Help)) !void {
+    try stream.writeAll("USAGE:\n\t" ++ build_options.exe_name ++ " ");
+    try clap.usage(stream, params);
+    try stream.writeAll("\nOPTIONS:\n");
+    try clap.help(stream, params);
+}
+
+fn printUsageAndExit(stream: anytype, comptime params: []const clap.Param(clap.Help)) noreturn {
+    printUsage(stream, params) catch {};
+    std.process.exit(0);
+}
+
+fn printVersionAndExit(stream: anytype) noreturn {
+    stream.print("{s} {s}\n", .{ build_options.exe_name, build_options.exe_version }) catch {};
+    std.process.exit(0);
+}
+
+fn printErrorAndExit(comptime format: []const u8, args: anytype) noreturn {
+    ret: {
+        const msg = std.fmt.allocPrint(gpa.allocator(), format, args) catch break :ret;
+        std.io.getStdErr().writeAll(msg) catch {};
+    }
+    std.process.exit(1);
+}
