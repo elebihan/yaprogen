@@ -1,0 +1,75 @@
+#
+# {{project_name}} - {{description}}
+#
+# {{copyright_notice}}
+#
+{{#license_notice}}
+# {{line}}
+{{/license_notice}}
+#
+
+project('{{project_name}}', 'rust',
+        version : '0.1.1',
+        license : '{{license}}',
+        default_options : [
+          'prefix=/usr/local',
+          'sysconfdir=/etc',
+        ],
+        meson_version : '>= 0.50')
+
+prefixdir = get_option('prefix')
+bindir = join_paths(prefixdir, get_option('bindir'))
+libdir = join_paths(prefixdir, get_option('libdir'))
+sysconfdir = join_paths(prefixdir, get_option('sysconfdir'))
+includedir = join_paths(prefixdir, get_option('includedir'))
+datadir = join_paths(prefixdir, get_option('datadir'))
+
+enable_man_pages = get_option('man-pages')
+if enable_man_pages
+  pandoc = find_program('pandoc', required : true)
+  if pandoc.found()
+    subdir('man')
+  endif
+endif
+
+if get_option('buildtype').startswith('debug')
+  zig_mode = 'debug'
+else
+  zig_mode = 'release'
+endif
+
+gyro = find_program('gyro')
+zig = find_program('zig')
+zig_wrapper = find_program('build-aux/zig')
+
+deps = custom_target('deps.zig',
+                      console : true,
+                      output : ['deps.zig'],
+                      command : ['gyro', 'fetch'])
+
+program = custom_target('{{executable_name}}',
+                        depends : deps,
+                        build_by_default : true,
+                        console : true,
+                        output : ['{{executable_name}}'],
+                        install : true,
+                        install_dir : bindir,
+                        command : [zig_wrapper,
+                                  '@CURRENT_SOURCE_DIR@',
+                                  '@OUTPUT@',
+                                  zig_mode,
+                                 ])
+
+status = [
+  '@0@ @1@'.format(meson.project_name(), meson.project_version()),
+
+  'prefix:         @0@'.format(prefixdir),
+  'sysconfdir:     @0@'.format(sysconfdir),
+  'libdir:         @0@'.format(libdir),
+  'includedir:     @0@'.format(includedir),
+  'bindir:         @0@'.format(bindir),
+  '',
+  'man:            @0@'.format(enable_man_pages),
+]
+
+message('\n         '.join(status))

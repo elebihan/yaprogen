@@ -1,0 +1,2 @@
+pub const EXE_NAME = "{{executable_name}}";
+pub const EXE_VERSION = "{{project_version}}";

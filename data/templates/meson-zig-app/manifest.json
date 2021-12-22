@@ -1,0 +1,6 @@
+{
+	"name": "meson-zig-app",
+	"description": "Zig application (using Meson)",
+	"author": "Eric Le Bihan",
+	"is-library": true
+}
