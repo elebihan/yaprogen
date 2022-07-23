@@ -28,7 +28,7 @@
    :license: GPLv3+
 """
 
-__docformat__ = 'restructuredtext en'
-__version__ = '0.7.1'
+__docformat__ = "restructuredtext en"
+__version__ = "0.8.0"
 
 # vim: ts=4 sw=4 sts=4 et ai
