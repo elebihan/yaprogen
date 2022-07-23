@@ -1,0 +1,56 @@
+#
+# {{project_name}} - {{description}}
+#
+# {{copyright_notice}}
+#
+{{#license_notice}}
+# {{line}}
+{{/license_notice}}
+#
+
+project('{{project_name}}', 'd',
+        version : '0.1.1',
+        license : '{{license}}',
+        meson_version : '>= 0.50')
+
+prefixdir = get_option('prefix')
+bindir = join_paths(prefixdir, get_option('bindir'))
+libdir = join_paths(prefixdir, get_option('libdir'))
+sysconfdir = join_paths(prefixdir, get_option('sysconfdir'))
+includedir = join_paths(prefixdir, get_option('includedir'))
+datadir = join_paths(prefixdir, get_option('datadir'))
+
+app_defs = [
+  ['APP_NAME', meson.project_name()],
+  ['APP_VERSION', meson.project_version()],
+]
+
+conf = configuration_data()
+
+foreach def : app_defs
+  conf.set_quoted(def[0], def[1])
+endforeach
+
+subdir('src')
+
+enable_man_pages = get_option('man-pages')
+if enable_man_pages
+  xsltproc = find_program('xsltproc', required : true)
+  if xsltproc.found()
+    subdir('man')
+  endif
+endif
+
+status = [
+  '@0@ @1@'.format(meson.project_name(), meson.project_version()),
+
+  'prefix:         @0@'.format(prefixdir),
+  'sysconfdir:     @0@'.format(sysconfdir),
+  'libdir:         @0@'.format(libdir),
+  'includedir:     @0@'.format(includedir),
+  'bindir:         @0@'.format(bindir),
+  '',
+  'man:            @0@'.format(enable_man_pages),
+]
+
+message('\n         '.join(status))

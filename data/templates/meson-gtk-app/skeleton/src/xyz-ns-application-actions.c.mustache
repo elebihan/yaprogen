@@ -1,0 +1,59 @@
+/*
+ * This file is part of {{project_name}}
+ *
+ * {{copyright_notice}}
+ *
+{{#license_notice}}
+ * {{line}}
+{{/license_notice}}
+*/
+
+#include <glib/gi18n.h>
+
+#include "{{ns_normalized}}-application-actions.h"
+
+#include "config.h"
+
+static void on_about(GSimpleAction *action, GVariant *parameter,
+		     gpointer user_data)
+{
+	GtkApplication *application;
+	GtkWidget *window;
+	GList *windows;
+	const gchar *authors[] = {
+		"{{author_name}} <{{author_email}}>",
+		NULL,
+	};
+
+	application = GTK_APPLICATION(user_data);
+	windows = gtk_application_get_windows(application);
+	if (!windows) {
+		g_warning(_("Failed to find windows for application\n"));
+		return;
+	}
+	window = windows->data;
+	gtk_show_about_dialog(GTK_WINDOW(window), "version", PACKAGE_VERSION,
+			      "copyright", "Copyright \xc2\xa9 {{year}} {{copyright_holder}}",
+			      "comments", _("{{description}}"),
+			      "authors", authors,
+			      "logo-icon-name", "{{app_id}}",
+			      NULL);
+}
+
+static void on_quit(GSimpleAction *action, GVariant *parameter,
+		    gpointer user_data)
+{
+	g_application_quit(G_APPLICATION(user_data));
+}
+
+static const GActionEntry actions[] =
+{
+	{ "about", on_about },
+	{ "quit", on_quit }
+};
+
+void {{ns_lower}}_application_actions_create({{ns_name}}Application *application)
+{
+	g_action_map_add_action_entries(G_ACTION_MAP(application), actions,
+					G_N_ELEMENTS(actions), application);
+}

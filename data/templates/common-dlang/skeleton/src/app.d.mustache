@@ -1,0 +1,56 @@
+/*
+ * This file is part of {{project_name}}
+ *
+ * {{copyright_notice}}
+ *
+ {{#license_notice}}
+ * {{line}}
+ {{/license_notice}}
+*/
+
+import std.getopt;
+import std.stdio;
+import appinfo;
+
+private void printHelp()
+{
+    writeln(`Usage: `, appName, ` [OPTIONS]
+
+Options:
+   -h, --help    Print this help message and exit
+   -V, --version Print program version and exit
+`);
+}
+
+int main(string[] args)
+{
+    bool showHelp = false;
+    bool showVersion = false;
+
+    try
+    {
+        getopt(args,
+               "help|h",  &showHelp,
+               "version|V", &showVersion);
+    }
+    catch (GetOptException e)
+    {
+        stderr.writeln(e.msg);
+        return 1;
+    }
+
+    if (showHelp)
+    {
+        printHelp();
+        return 0;
+    }
+
+    if (showVersion)
+    {
+        writeln(appVersion);
+        return 0;
+    }
+
+
+    return 0;
+}

@@ -1,0 +1,43 @@
+/*
+ * This file is part of {{project_name}}
+ *
+ * {{copyright_notice}}
+ *
+{{#license_notice}}
+ * {{line}}
+{{/license_notice}}
+*/
+
+#ifndef {{ns_upper}}_APPLICATION_H
+#define {{ns_upper}}_APPLICATION_H
+
+#include <gtk/gtk.h>
+
+G_BEGIN_DECLS
+
+#define {{ns_upper}}_TYPE_APPLICATION ({{ns_lower}}_application_get_type ())
+#define {{ns_upper}}_APPLICATION(object) (G_TYPE_CHECK_INSTANCE_CAST((object), {{ns_upper}}_TYPE_APPLICATION, {{ns_name}}Application))
+
+typedef struct _{{ns_name}}Application {{ns_name}}Application;
+typedef struct _{{ns_name}}ApplicationClass {{ns_name}}ApplicationClass;
+
+G_DEFINE_AUTOPTR_CLEANUP_FUNC({{ns_name}}Application, g_object_unref)
+
+struct _{{ns_name}}Application
+{
+	/*< private >*/
+	GtkApplication parent_instance;
+};
+
+struct _{{ns_name}}ApplicationClass
+{
+	/*< private >*/
+	GtkApplicationClass parent_class;
+};
+
+GType {{ns_lower}}_application_get_type(void);
+{{ns_name}}Application *{{ns_lower}}_application_new(void);
+
+G_END_DECLS
+
+#endif /* !{{ns_upper}}_APPLICATION_H */

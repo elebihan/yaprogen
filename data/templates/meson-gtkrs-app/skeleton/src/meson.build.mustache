@@ -1,0 +1,15 @@
+#
+# {{project_name}} - {{description}}
+#
+# {{copyright_notice}}
+#
+{{#license_notice}}
+# {{line}}
+{{/license_notice}}
+#
+
+pkginfo_rs = configure_file(input : 'pkginfo.rs.in',
+                            output : 'pkginfo.rs',
+                            configuration : conf)
+
+run_command('cp', pkginfo_rs, meson.current_source_dir(), check : true)

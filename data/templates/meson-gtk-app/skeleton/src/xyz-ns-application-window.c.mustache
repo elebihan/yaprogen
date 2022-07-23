@@ -1,0 +1,82 @@
+/*
+ * This file is part of {{project_name}}
+ *
+ * {{copyright_notice}}
+ *
+{{#license_notice}}
+ * {{line}}
+{{/license_notice}}
+*/
+
+#include "{{ns_normalized}}-application-window.h"
+#include "{{ns_normalized}}-header-bar.h"
+
+#include "config.h"
+
+typedef struct
+{
+	{{ns_name}}HeaderBar *header_bar;
+} {{ns_name}}ApplicationWindowPrivate;
+
+G_DEFINE_TYPE_WITH_PRIVATE({{ns_name}}ApplicationWindow, {{ns_lower}}_application_window, GTK_TYPE_APPLICATION_WINDOW)
+
+static void {{ns_lower}}_application_window_dispose(GObject *object)
+{
+	{{ns_name}}ApplicationWindow *self;
+	{{ns_name}}ApplicationWindowPrivate *priv;
+
+	self = {{ns_upper}}_APPLICATION_WINDOW(object);
+	priv = {{ns_lower}}_application_window_get_instance_private(self);
+
+	/* Unref private members here */
+
+	G_OBJECT_CLASS({{ns_lower}}_application_window_parent_class)->dispose(object);
+}
+
+static void {{ns_lower}}_application_window_finalize(GObject *object)
+{
+	{{ns_name}}ApplicationWindow *self;
+	{{ns_name}}ApplicationWindowPrivate *priv;
+
+	self = {{ns_upper}}_APPLICATION_WINDOW(object);
+	priv = {{ns_lower}}_application_window_get_instance_private(self);
+
+	/* Free allocated private members here */
+
+	G_OBJECT_CLASS({{ns_lower}}_application_window_parent_class)->finalize(object);
+}
+
+static void {{ns_lower}}_application_window_init({{ns_name}}ApplicationWindow *self)
+{
+	{{ns_name}}ApplicationWindowPrivate *priv;
+	GtkWindow *window;
+
+	priv = {{ns_lower}}_application_window_get_instance_private(self);
+
+	priv->header_bar = {{ns_lower}}_header_bar_new();
+
+	window = GTK_WINDOW(self);
+	gtk_window_set_title(window, PACKAGE_NAME);
+	gtk_window_set_titlebar(window, GTK_WIDGET(priv->header_bar));
+}
+
+static void {{ns_lower}}_application_window_class_init({{ns_name}}ApplicationWindowClass *klass)
+{
+	G_OBJECT_CLASS(klass)->dispose = {{ns_lower}}_application_window_dispose;
+	G_OBJECT_CLASS(klass)->finalize = {{ns_lower}}_application_window_finalize;
+}
+
+/**
+ * {{ns_lower}}_application_window_new:
+ *
+ * Create a new {{ns_name}}ApplicationWindow instance.
+ *
+ * Returns: a new #{{ns_name}}ApplicationWindow
+ */
+{{ns_name}}ApplicationWindow* {{ns_lower}}_application_window_new(GtkApplication *application)
+{
+	g_return_val_if_fail(GTK_IS_APPLICATION(application), NULL);
+
+	return g_object_new({{ns_upper}}_TYPE_APPLICATION_WINDOW, "application",
+			    application, NULL);
+}

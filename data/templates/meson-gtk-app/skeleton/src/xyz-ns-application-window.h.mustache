@@ -1,0 +1,41 @@
+/*
+ * This file is part of {{project_name}}
+ *
+ * {{copyright_notice}}
+ *
+{{#license_notice}}
+ * {{line}}
+{{/license_notice}}
+*/
+
+#ifndef {{ns_upper}}_APPLICATION_WINDOW_H
+#define {{ns_upper}}_APPLICATION_WINDOW_H
+
+#include <gtk/gtk.h>
+
+G_BEGIN_DECLS
+
+#define {{ns_upper}}_TYPE_APPLICATION_WINDOW ({{ns_lower}}_application_window_get_type ())
+#define {{ns_upper}}_APPLICATION_WINDOW(object) (G_TYPE_CHECK_INSTANCE_CAST((object), {{ns_upper}}_TYPE_APPLICATION_WINDOW, {{ns_name}}ApplicationWindow))
+
+typedef struct _{{ns_name}}ApplicationWindow {{ns_name}}ApplicationWindow;
+typedef struct _{{ns_name}}ApplicationWindowClass {{ns_name}}ApplicationWindowClass;
+
+struct _{{ns_name}}ApplicationWindow
+{
+	/*< private >*/
+	GtkApplicationWindow parent_instance;
+};
+
+struct _{{ns_name}}ApplicationWindowClass
+{
+	/*< private >*/
+	GtkApplicationWindowClass parent_class;
+};
+
+GType {{ns_lower}}_application_window_get_type(void);
+{{ns_name}}ApplicationWindow *{{ns_lower}}_application_window_new(GtkApplication *application);
+
+G_END_DECLS
+
+#endif /* !{{ns_upper}}_APPLICATION_WINDOW_H */

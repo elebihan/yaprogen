@@ -1,0 +1,26 @@
+#
+# {{project_name}} - {{description}}
+#
+# {{copyright_notice}}
+#
+{{#license_notice}}
+# {{line}}
+{{/license_notice}}
+#
+
+subdir('icons')
+
+gnome.compile_resources('{{project_normalized}}',
+                        '{{project_normalized}}.gresource.xml',
+                        gresource_bundle: true,
+                        install: true,
+                        install_dir: pkgdatadir,
+)
+
+i18n.merge_file(input : '{{app_id}}.desktop.in',
+                output : '{{app_id}}.desktop',
+                type : 'desktop',
+                po_dir : join_paths(meson.source_root(), 'po'),
+                install : true,
+                install_dir : join_paths(datadir,'applications')
+)

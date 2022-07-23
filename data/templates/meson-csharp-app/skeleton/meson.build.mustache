@@ -15,7 +15,7 @@ project('{{project_name}}', 'cs',
           'prefix=/usr/local',
           'sysconfdir=/etc',
         ],
-        meson_version : '>= 0.43')
+        meson_version : '>= 0.50')
 
 prefixdir = get_option('prefix')
 bindir = join_paths(prefixdir, get_option('bindir'))
