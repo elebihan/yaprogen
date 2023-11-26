@@ -39,7 +39,7 @@ from .licensing import get_license_notice_text
 
 def split(string):
     crumbs = []
-    for chunk in re.split('\W+', string):
+    for chunk in re.split(r'\W+', string):
         pieces = re.findall('[A-Z][^A-Z]*', chunk)
         if pieces:
             crumbs += pieces
