@@ -90,7 +90,7 @@ class Configuration:
         :type filename: str.
         """
         parser = configparser.ConfigParser()
-        parser.readfp(open(filename))
+        parser.read_file(open(filename))
         self.author_name = parser.get('Creation', 'AuthorName')
         self.author_email = parser.get('Creation', 'AuthorEmail')
         self.company_name = parser.get('Creation', 'CompanyName')
