@@ -1,43 +1,52 @@
 //
 // This file is part of {{project_name}}
 //
-// {{copyright_notice}}
+// SPDX-FileCopyrightText: © {{copyright_notice}}
 //
-{{#license_notice}}
-// {{line}}
-{{/license_notice}}
+// SPDX-License-Identifier: {{license_alias}}
 //
 
-use std::env::args;
-use std::error;
-use std::result::Result;
+mod config {
+    #![allow(dead_code)]
 
-use gio::prelude::*;
+    include!(concat!(env!("CODEGEN_BUILD_DIR"), "/config.rs"));
+}
 
-use gettextrs::{bindtextdomain, textdomain};
+mod application;
+mod window;
 
-mod pkginfo;
-mod resources;
-mod actions;
-mod app;
-mod header_bar;
+use std::env;
+use std::path::PathBuf;
 
-use crate::app::App;
-use crate::pkginfo::{APPLICATION_NAME, GETTEXT_PACKAGE, LOCALEDIR};
+use gettextrs::LocaleCategory;
+use gtk::{gio, glib};
 
-fn main() -> Result<(), Box<dyn error::Error>> {
+use self::application::Application;
+use self::config::{GETTEXT_PACKAGE, LOCALEDIR, RESOURCES_FILE};
 
-    resources::init()?;
+fn main() -> glib::ExitCode {
+    tracing_subscriber::fmt::init();
 
-    bindtextdomain(GETTEXT_PACKAGE, LOCALEDIR);
-    textdomain(GETTEXT_PACKAGE);
+    gettextrs::setlocale(LocaleCategory::LcAll, "");
+    gettextrs::bindtextdomain(GETTEXT_PACKAGE, LOCALEDIR).expect("Unable to bind the text domain");
+    gettextrs::textdomain(GETTEXT_PACKAGE).expect("Unable to switch to the text domain");
 
-    let app = gtk::Application::new(Some(APPLICATION_NAME), Default::default())?;
-    app.connect_startup(|app| {
-        App::on_startup(app);
-    });
+    glib::set_application_name("{{project_name}}");
 
-    app.run(&args().collect::<Vec<_>>());
+    let path = if env::var("MESON_DEVENV").is_ok() {
+        let mut path = env::current_exe().expect("Couldn't find current executable name");
+        path.pop();
+        path.pop();
+        path.push("data");
+        path.push("resources");
+        path.push("resources.gresource");
+        path
+    } else {
+        PathBuf::from(RESOURCES_FILE)
+    };
+    let res = gio::Resource::load(path).expect("Could not load gresource file");
+    gio::resources_register(&res);
 
-    Ok(())
+    let app = Application::default();
+    app.run()
 }

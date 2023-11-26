@@ -1,0 +1,40 @@
+# Hacking on {{project_name}}
+
+## Development
+
+To build for development (i.e. without installing):
+
+```sh
+mkdir _build
+meson setup . _build
+meson compile -C _build
+```
+
+To test for development:
+
+```sh
+meson devenv -C _build
+./{{executable_name}}
+```
+
+## Translation
+
+To generate the template:
+
+```sh
+xtr src/*.rs -o po/code.pot
+xgettext --from-code=UTF-8 _build/data/resources/ui/*.ui data/resources/ui/*.ui -o po/ui.pot
+msgcat po/code.pot po/ui.pot > po/{{executable_name}}.pot
+```
+
+To create a translation (e.g. french):
+
+```sh
+msginit --input po/{{executable_name}}.pot --output po/fr.po --locale fr
+```
+
+To update the french translation:
+
+```sh
+msgmerge --update po/fr.po po/{{executable_name}}.pot
+```

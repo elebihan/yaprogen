@@ -9,5 +9,20 @@
 {{/license_notice}}
 #
 
-option('man-pages', type : 'boolean', value : true,
-       description : '''build MAN pages''')
+option(
+  'man-pages',
+  type : 'boolean',
+  value : true,
+  description : '''build MAN pages'''
+)
+
+option(
+  'profile',
+  type: 'combo',
+  choices: [
+    'development',
+    'production'
+  ],
+  value: 'production',
+  description: 'The build profile for {{project_name}}. One of "production" or "development".'
+)

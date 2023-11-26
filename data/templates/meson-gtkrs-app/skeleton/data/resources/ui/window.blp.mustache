@@ -1,0 +1,37 @@
+/*
+ * {{project_name}} - {{description}}
+ *
+ * {{copyright_notice}}
+ *
+{{#license_notice}}
+ * {{line}}
+ {{/license_notice}}
+ */
+
+ using Gtk 4.0;
+ using Adw 1;
+
+ template $Window : Adw.ApplicationWindow {
+   title: "{{project_name}}";
+   default-width: 800;
+   default-height: 800;
+   width-request: 280;
+   height-request: 200;
+
+   content: Adw.ToolbarView {
+     [top]
+     Gtk.HeaderBar {
+       [end]
+       Gtk.MenuButton main_menu_button {
+         icon-name: "open-menu-symbolic";
+         menu-model: main_menu;
+         tooltip-text: _("Menu");
+       }
+     }
+   };
+ }
+
+menu main_menu {
+  item(_("About {{project_name}}"), "app.about")
+  item(_("Show shortcuts"), "win.show-help-overlay")
+}
