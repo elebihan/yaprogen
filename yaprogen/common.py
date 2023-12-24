@@ -38,13 +38,13 @@ def get_data_dir():
     rtype: str
     """
     root_dir = os.path.dirname(os.path.abspath(__file__))
-    root_dir = os.path.join(root_dir, '..')
+    root_dir = os.path.join(root_dir, "..")
 
-    if os.path.exists(os.path.join(root_dir, '.git')):
-        data_dir = os.path.join(root_dir, 'data')
+    if os.path.exists(os.path.join(root_dir, ".git")):
+        data_dir = os.path.join(root_dir, "data")
     else:
-        upper, lower = root_dir.split('lib')
-        data_dir = os.path.join(upper, 'share', 'yaprogen')
+        upper, lower = root_dir.split("lib")
+        data_dir = os.path.join(upper, "share", "yaprogen")
 
     return os.path.normpath(data_dir)
 
@@ -54,7 +54,7 @@ def get_default_notices_dir():
 
     rtype: str
     """
-    return os.path.join(get_data_dir(), 'notices')
+    return os.path.join(get_data_dir(), "notices")
 
 
 def list_available_licenses():
@@ -65,18 +65,19 @@ def list_available_licenses():
     """
     directories = [get_default_notices_dir()]
     licenses = []
-    if 'YAPROGEN_LICENSE_NOTICES_PATH' in os.env:
-        directories += os.environ['YAPROGEN_LICENSE_NOTICES_PATH'].split(':')
+    if "YAPROGEN_LICENSE_NOTICES_PATH" in os.env:
+        directories += os.environ["YAPROGEN_LICENSE_NOTICES_PATH"].split(":")
         for directory in directories:
             for entry in os.listdir(directory):
                 root, ext = os.path.splitext(entry)
-                if ext == '.txt':
+                if ext == ".txt":
                     licenses.append(root)
     return set(sorted(licenses))
 
 
 class Configuration:
     """Stores the configuration of the application."""
+
     def __init__(self):
         self.author_name = None
         self.author_email = None
@@ -91,11 +92,12 @@ class Configuration:
         """
         parser = configparser.ConfigParser()
         parser.read_file(open(filename))
-        self.author_name = parser.get('Creation', 'AuthorName')
-        self.author_email = parser.get('Creation', 'AuthorEmail')
-        self.company_name = parser.get('Creation', 'CompanyName')
-        self.preferred_license = parser.get('Creation', 'PreferredLicense',
-                                            fallback='GPL-2.0+')
+        self.author_name = parser.get("Creation", "AuthorName")
+        self.author_email = parser.get("Creation", "AuthorEmail")
+        self.company_name = parser.get("Creation", "CompanyName")
+        self.preferred_license = parser.get(
+            "Creation", "PreferredLicense", fallback="GPL-2.0+"
+        )
 
 
 def load_configuration():
@@ -105,7 +107,7 @@ def load_configuration():
     :rtype: :class:`Config`.
     """
     config = Configuration()
-    filename = os.path.expanduser('~/.config/yaprogen.conf')
+    filename = os.path.expanduser("~/.config/yaprogen.conf")
     if os.path.exists(filename):
         config.load_from_file(filename)
     return config
@@ -114,12 +116,13 @@ def load_configuration():
 def setup_i18n():
     """Set up internationalization."""
     root_dir = os.path.dirname(os.path.abspath(__file__))
-    if 'lib' not in root_dir:
+    if "lib" not in root_dir:
         return
-    root_dir, mod_dir = root_dir.split('lib', 1)
-    locale_dir = os.path.join(root_dir, 'share', 'locale')
+    root_dir, mod_dir = root_dir.split("lib", 1)
+    locale_dir = os.path.join(root_dir, "share", "locale")
 
-    bindtextdomain('yaprogen', locale_dir)
-    textdomain('yaprogen')
+    bindtextdomain("yaprogen", locale_dir)
+    textdomain("yaprogen")
+
 
 # vim: ts=4 sw=4 sts=4 et ai

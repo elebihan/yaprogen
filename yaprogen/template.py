@@ -36,7 +36,7 @@ from gettext import gettext as _
 
 def get_default_templates_dir():
     """Returns the path to the default templates directory"""
-    return os.path.join(get_data_dir(), 'templates')
+    return os.path.join(get_data_dir(), "templates")
 
 
 def list_templates(directory):
@@ -52,8 +52,8 @@ def list_templates(directory):
     for entry in os.listdir(directory):
         entry = os.path.join(directory, entry)
         if os.path.isdir(entry):
-            has_manifest = os.path.exists(os.path.join(entry, 'manifest.json'))
-            has_skeleton = os.path.exists(os.path.join(entry, 'skeleton'))
+            has_manifest = os.path.exists(os.path.join(entry, "manifest.json"))
+            has_skeleton = os.path.exists(os.path.join(entry, "skeleton"))
             if has_manifest and has_skeleton:
                 templates.append(Template(entry))
     return templates
@@ -68,8 +68,8 @@ def list_available_templates():
     directories = [get_default_templates_dir()]
     templates = []
     names = []
-    if 'YAPROGEN_TEMPLATES_PATH' in os.environ:
-        directories += os.environ['YAPROGEN_TEMPLATES_PATH'].split(':')
+    if "YAPROGEN_TEMPLATES_PATH" in os.environ:
+        directories += os.environ["YAPROGEN_TEMPLATES_PATH"].split(":")
     for directory in reversed(directories):
         if os.path.exists(directory):
             for template in list_templates(directory):
@@ -91,7 +91,7 @@ def lookup_template_by_name(name):
     for entry in list_available_templates():
         if entry.name == name:
             return entry
-    raise RuntimeError(_('template not found'))
+    raise RuntimeError(_("template not found"))
 
 
 class Template(object):
@@ -100,19 +100,20 @@ class Template(object):
     :param path: path to the template.
     :type path: str.
     """
+
     def __init__(self, path):
         self._path = path
-        filename = os.path.join(path, 'manifest.json')
+        filename = os.path.join(path, "manifest.json")
         with open(filename) as f:
             m = json.load(f)
-            if 'name' not in m:
-                msg = _('{} is not a valid manifest')
+            if "name" not in m:
+                msg = _("{} is not a valid manifest")
                 raise RuntimeError(msg.format(filename))
-            self._name = m.get('name')
-            self._descr = m.get('description', 'No description')
-            self._is_library = m.get('is-library', False)
-            variables = m.get('variables', [])
-            self.extra_variables = dict(map(lambda x: (x, ''), variables))
+            self._name = m.get("name")
+            self._descr = m.get("description", "No description")
+            self._is_library = m.get("is-library", False)
+            variables = m.get("variables", [])
+            self.extra_variables = dict(map(lambda x: (x, ""), variables))
 
     @property
     def name(self):
@@ -132,14 +133,15 @@ class Template(object):
 
     @property
     def files(self):
-        ignores = ('*.swp', '.svn', '*~')
+        ignores = ("*.swp", ".svn", "*~")
         files = []
-        path = os.path.join(self.path, 'skeleton')
+        path = os.path.join(self.path, "skeleton")
         for root, directories, filenames in os.walk(path):
             for fn in filenames:
                 if not any(fnmatch(fn, p) for p in ignores):
                     files.append(os.path.join(root, fn))
         files = set(files)
         return sorted(files)
+
 
 # vim: ts=4 sw=4 sts=4 et ai

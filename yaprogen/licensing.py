@@ -37,18 +37,18 @@ def get_default_notices_dir():
 
     rtype: str
     """
-    return os.path.join(get_data_dir(), 'notices')
+    return os.path.join(get_data_dir(), "notices")
 
 
 def _list_available_license_notices():
     directories = [get_default_notices_dir()]
     notices = {}
-    if 'YAPROGEN_LICENSE_NOTICES_PATH' in os.environ:
-        directories += os.environ['YAPROGEN_LICENSE_NOTICES_PATH'].split(':')
+    if "YAPROGEN_LICENSE_NOTICES_PATH" in os.environ:
+        directories += os.environ["YAPROGEN_LICENSE_NOTICES_PATH"].split(":")
     for directory in directories:
         for entry in os.listdir(directory):
             root, ext = os.path.splitext(entry)
-            if ext == '.txt':
+            if ext == ".txt":
                 notices[root] = os.path.join(directory, entry)
     return notices
 
@@ -73,5 +73,6 @@ def get_license_notice_text(license):
         raise ValueError(_("{} is not a supported license").format(license))
     with open(notices[license]) as f:
         return f.read()
+
 
 # vim: ts=4 sw=4 sts=4 et ai
