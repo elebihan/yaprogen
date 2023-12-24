@@ -100,6 +100,7 @@ class Generator(object):
         self.quiet = False
         self.enable_cross_platform = False
         self.use_spdx = False
+        self.use_email = False
         self._values = {}
         self.overrides = {}
 
@@ -135,7 +136,7 @@ class Generator(object):
 
         if not self.copyright_holder:
             if self.author:
-                if self.email:
+                if self.email and self.use_email:
                     self.copyright_holder = "{} <{}>".format(self.author,
                                                              self.email)
                 else:

@@ -66,6 +66,7 @@ def parse_cmd_create(args):
     gen.license = args.license or config.preferred_license
     gen.enable_cross_platform = args.cross_platform
     gen.use_spdx = args.spdx
+    gen.use_email = args.use_email
     gen.generate(args.output)
 
 
@@ -129,6 +130,10 @@ def main():
                    action='store_true',
                    default=False,
                    help=_('use SPDX identifier instead of license text'))
+    p.add_argument('-u', '--use-email',
+                   action='store_true',
+                   default=False,
+                   help=_('use email in copyright holder name'))
     p.add_argument('-O', '--override',
                    action='append',
                    dest='overrides',
