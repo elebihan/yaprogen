@@ -1,4 +1,0 @@
-# -*- mode: meson -*-
-
-option('man-pages', type : 'boolean', value : true,
-       description : '''build MAN pages''')
