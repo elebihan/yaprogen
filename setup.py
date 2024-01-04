@@ -31,55 +31,58 @@ import yaprogen
 def collect_data_files(dst_dir, src_dir):
     data_files = []
     for root, directory, filenames in os.walk(src_dir):
-        for filename in fnmatch.filter(filenames, '*.*'):
+        for filename in fnmatch.filter(filenames, "*.*"):
             src = os.path.join(root, filename)
             dst = root.replace(src_dir, dst_dir)
             data_files.append((dst, [src]))
     return data_files
 
 
-setup(name='yaprogen',
-      version=yaprogen.__version__,
-      description='Yet Another Project Generator',
-      long_description='''
+setup(
+    name="yaprogen",
+    version=yaprogen.__version__,
+    description="Yet Another Project Generator",
+    long_description="""
       This program generates the skeleton for different build systems
       to develop a library or a program .
-      ''',
-      license='GPLv3',
-      url='https://github.com/elebihan/yaprogen/',
-      platforms=['Any'],
-      keywords=['code generator', 'autotools'],
-      python_requires=">=3.7",
-      install_requires=[
-          'pystache >= 0.6'
-      ],
-      classifiers=[
-          'Development Status :: 3 - Alpha',
-          "Programming Language :: Python",
-          'Programming Language :: Python :: 3',
-          "Programming Language :: Python :: 3.7",
-          "Programming Language :: Python :: 3.8",
-          "Programming Language :: Python :: 3.9",
-          "Programming Language :: Python :: 3.10",
-          "Programming Language :: Python :: Implementation :: CPython",
-      ],
-      packages=find_packages(),
-      entry_points={
-          'console_scripts': [
-              'yaprogen = yaprogen.cli:main',
-          ]
-      },
-      data_files=[
-          ('share/zsh/site-functions', glob('shell-completion/zsh/_*')),
-      ] + collect_data_files('share/yaprogen', 'data'),
-      include_package_data=True,
-      author='Eric Le Bihan',
-      author_email='eric.le.bihan.dev@free.fr',
-      cmdclass={'build': build,
-                'build_man': build_man,
-                'extract_messages': extract_messages,
-                'init_catalog': init_catalog,
-                'update_catalog': update_catalog,
-                'build_catalog': build_catalog})
+      """,
+    license="GPLv3",
+    url="https://github.com/elebihan/yaprogen/",
+    platforms=["Any"],
+    keywords=["code generator", "autotools"],
+    python_requires=">=3.7",
+    install_requires=["pystache >= 0.6"],
+    classifiers=[
+        "Development Status :: 3 - Alpha",
+        "Programming Language :: Python",
+        "Programming Language :: Python :: 3",
+        "Programming Language :: Python :: 3.7",
+        "Programming Language :: Python :: 3.8",
+        "Programming Language :: Python :: 3.9",
+        "Programming Language :: Python :: 3.10",
+        "Programming Language :: Python :: Implementation :: CPython",
+    ],
+    packages=find_packages(),
+    entry_points={
+        "console_scripts": [
+            "yaprogen = yaprogen.cli:main",
+        ]
+    },
+    data_files=[
+        ("share/zsh/site-functions", glob("shell-completion/zsh/_*")),
+    ]
+    + collect_data_files("share/yaprogen", "data"),
+    include_package_data=True,
+    author="Eric Le Bihan",
+    author_email="eric.le.bihan.dev@free.fr",
+    cmdclass={
+        "build": build,
+        "build_man": build_man,
+        "extract_messages": extract_messages,
+        "init_catalog": init_catalog,
+        "update_catalog": update_catalog,
+        "build_catalog": build_catalog,
+    },
+)
 
 # vim: ts=4 sts=4 sw=4 sta et ai
