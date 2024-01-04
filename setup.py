@@ -33,7 +33,7 @@ def collect_data_files(dst_dir, src_dir):
     for root, directory, filenames in os.walk(src_dir):
         for filename in fnmatch.filter(filenames, "*.*"):
             src = os.path.join(root, filename)
-            dst = root.replace(src_dir, dst_dir)
+            dst = root.replace(src_dir, dst_dir, 1)
             data_files.append((dst, [src]))
     return data_files
 
