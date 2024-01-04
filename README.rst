@@ -18,7 +18,7 @@ environment`_::
 
   python3 -m venv venv
   source ./venv/bin/activate
-  pip3 install docutils
+  pip3 install docutils wheel
   python setup.py bdist_wheel
   deactivate
 
